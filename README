@@ -1,0 +1,70 @@
+The application in this repository is described in the paper: "REINVENT 2.0 – an AI tool for de novo drug design"
+=================================================================================================================
+
+Usage
+-----
+
+1. Sample inputs are provided in reinvent/configs folder. More examples will follow.
+
+
+-------------------------------------------------
+To use Tensorboard for logging:
+
+   1. To launch Tensorboard, you need a graphical environment like VDI. Write:
+       tensorboard --logdir "path to your log output directory" --port=8008.
+       This will give you an address to copy to a browser and access to the graphical summaries from Tensorboard.
+
+   2. Further commands to Tensorboard to change the amount of scalars,histograms, images, distributions and graphs shown
+        can be done as follows:
+        --samples_per_plugin=scalar=700, images=20
+
+Installation
+-----
+
+1. Install Anaconda / Miniconda
+2. Clone the repository
+3. (Optional) Checkout the appropriate branch of the repository and create a new local branch tied to the remote one, e.g.:
+    git checkout --track origin/reinvent.v.2
+4. Open terminal, go to the repository and generate the appropriate environment:
+    conda env create -f reinvent_shared.yml
+   Hint: Use the appropriate `conda` binary. You might want to check, whether you succeeded:
+    conda info --envs
+5. To set environmental variables, for example a license:
+   On the command line, first:
+
+       cd $CONDA_PREFIX
+       mkdir -p ./etc/conda/activate.d
+       mkdir -p ./etc/conda/deactivate.d
+       touch ./etc/conda/activate.d/env_vars.sh
+       touch ./etc/conda/deactivate.d/env_vars.sh
+
+   then edit ./etc/conda/activate.d/env_vars.sh as follows:
+
+       #!/bin/sh
+       export SOME_LICENSE='/path/to/your/license/file'
+
+   and finally, edit ./etc/conda/deactivate.d/env_vars.sh :
+
+       #!/bin/sh
+       unset SOME_LICENSE
+6. Activate environment
+7. In the project directory, in ./configs/ create the file `config.json` by copying over `example.config.json` and editing as required
+
+
+Tests - currently not imported. Soon to follow.
+-----
+Before running unit tests make sure to set up your config.json. Use the provided configs/example.config.json  and rename it to configs/config.json.
+The tests can be executed using Unittest:
+```
+python -m unittest
+```
+
+Or using Pytest:
+```
+python -m pytest unittest_reinvent
+```
+
+Integration tests are decorated with `@pytest.mark.integration`. You can easily skip integration tests using pytest mark expression (`-m` argument):
+```
+python -m pytest -m "not integration" --strict-markers unittest_reinvent/
+```

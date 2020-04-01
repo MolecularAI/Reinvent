@@ -1,0 +1,5 @@
+{
+  "USER_NAME": "reinvent_user",
+  "MAIN_TEST_PATH": "/location/where/unit/tests/will/be/executed",
+  "DEVELOPMENT_ENVIRONMENT": true
+}
