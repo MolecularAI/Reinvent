@@ -1,0 +1,18 @@
+Aurora-A and B-raf datasets were obtained from the publication:
+Deep Confidence: A Computationally Efficient Framework for Calculating Reliable Prediction Errors for Deep Neural Networks
+Isidro Cortés-Ciriano and Andreas Bender
+Journal of Chemical Information and Modeling 2019 59 (3), 1269-1281 
+DOI: 10.1021/acs.jcim.8b00542
+
+Target preferred name	Target abbreviation	Uniprot ID	ChEMBL ID	Number of bioactivity data points
+Serine/threonine-protein kinase Aurora-A	Aurora-A	O14965	CHEMBL4722	2,125
+Serine/threonine-protein kinase B-raf	B-raf	P15056	CHEMBL5145	1,730
+
+Models: RF, Morgan 2048 bit, radius 3 optimized with optuna_AZ
+
+Aurora-A
+{"cross_validation": 5, "shuffle": true, "best_trial": 47, "best_value": 0.6897701114884569, "n_trials": 100}, "descriptors": {"ECFP": {"parameters": {"radius": 3, "nBits": 2048}}}, "settings": {"mode": "regression", "direction": "maximize"}, "hyper_parameters": {"regressor": "RandomForest", "max_depth": 19, "n_estimators": 370, "max_features": "auto"}}
+
+B-raf
+{"cross_validation": 5, "shuffle": true, "best_trial": 13, "best_value": 0.7386246985262255, "n_trials": 100}, "descriptors": {"ECFP": {"parameters": {"radius": 3, "nBits": 2048}}}, "settings": {"mode": "regression", "direction": "maximize"}, "hyper_parameters": {"regressor": "RandomForest", "max_depth": 20, "n_estimators": 158, "max_features": "auto"}}
+
