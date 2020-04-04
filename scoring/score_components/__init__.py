@@ -6,6 +6,4 @@ from scoring.score_components.qed_score import QedScore
 from scoring.score_components.tanimoto_similarity import TanimotoSimilarity
 from scoring.score_components.selectivity_component import SelectivityComponent
 from scoring.score_components.synthetic_accessibility import *
-from scoring.score_components.clab import *
 from scoring.score_components.physchem import *
-from scoring.score_components.structural import *
