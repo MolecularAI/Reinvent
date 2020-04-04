@@ -1,0 +1,2 @@
+from unittest_reinvent.scaffoldfilter_tests.test_no_filter import *
+from unittest_reinvent.scaffoldfilter_tests.test_murcko_scaffold_filter import *
