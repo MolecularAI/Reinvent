@@ -1,0 +1,1 @@
+from unittest_reinvent.scoring_tests.synthetic_accessibility.test_sas_component import *
