@@ -1,0 +1,128 @@
+{
+	"version": 2,
+	"run_type": "reinforcement_learning",
+	"parameters": {
+		"scoring_function": {
+			"name": "custom_product",
+			"parallel": false,
+			"parameters": [
+				{
+					"component_type": "predictive_property",
+					"name": "Regression model",
+					"weight": 4,
+					"model_path": "/path/to/your/regression/predictive_model.pkl",
+					"smiles": [],
+					"specific_parameters": {
+						"transformation_type": "sigmoid",
+						"high": 9,
+						"low": 4,
+						"k": 0.25,
+						"scikit": "regression",
+						"transformation": true,
+						"descriptor_type": "ecfp_counts",
+						"size": 2048,
+						"radius": 3,
+						"use_counts": true,
+						"use_features": true
+					}
+				},
+				{
+					"component_type": "predictive_property",
+					"name": "Classification model",
+					"weight": 6,
+					"model_path": "/path/to/your/classification/predictive_model.pkl",
+					"smiles": [],
+					"specific_parameters": {
+						"scikit": "classification",
+						"descriptor_type": "ecfp_counts",
+						"size": 2048,
+						"radius": 3,
+						"use_counts": true,
+						"use_features": true
+					}
+				},
+				{
+					"component_type": "matching_substructure",
+					"name": "Matching substructure",
+					"weight": 1,
+					"model_path": null,
+					"smiles": [
+						"c1ccccc1CC"
+					],
+					"specific_parameters": null
+				},
+				{
+					"component_type": "custom_alerts",
+					"name": "Custom alerts",
+					"weight": 1,
+					"model_path": null,
+					"smiles": [
+						"[*;r8]",
+						"[*;r9]",
+						"[*;r10]",
+						"[*;r11]",
+						"[*;r12]",
+						"[*;r13]",
+						"[*;r14]",
+						"[*;r15]",
+						"[*;r16]",
+						"[*;r17]",
+						"[#8][#8]",
+						"[#6;+]",
+						"[#16][#16]",
+						"[#7;!n][S;!$(S(=O)=O)]",
+						"[#7;!n][#7;!n]",
+						"C#C",
+						"C(=[O,S])[O,S]",
+						"[#7;!n][C;!$(C(=[O,N])[N,O])][#16;!s]",
+						"[#7;!n][C;!$(C(=[O,N])[N,O])][#7;!n]",
+						"[#7;!n][C;!$(C(=[O,N])[N,O])][#8;!o]",
+						"[#8;!o][C;!$(C(=[O,N])[N,O])][#16;!s]",
+						"[#8;!o][C;!$(C(=[O,N])[N,O])][#8;!o]",
+						"[#16;!s][C;!$(C(=[O,N])[N,O])][#16;!s]"
+					],
+					"specific_parameters": null
+				},
+				{
+					"component_type": "qed_score",
+					"name": "QED Score",
+					"weight": 1,
+					"model_path": null,
+					"smiles": [],
+					"specific_parameters": null
+				}
+			]
+		},
+		"scaffold_filter": {
+			"name": "IdenticalMurckoScaffold",
+			"nbmax": 25,
+			"minscore": 0.4,
+			"minsimilarity": 0.4
+		},
+		"reinforcement_learning": {
+			"prior": "/path/to/existing/generative/model/augmented.prior",
+			"agent": "/path/to/existing/generative/model/augmented.prior",
+			"n_steps": 1000,
+			"sigma": 128,
+			"learning_rate": 0.0001,
+			"batch_size": 128,
+			"reset": 0,
+			"reset_score_cutoff": 0.5,
+			"margin_threshold": 50
+		},
+		"inception": {
+			"smiles": [],
+			"memory_size": 100,
+			"sample_size": 10
+		}
+	},
+	"logging": {
+		"sender": "this is relevant for remote job submission scenario",
+		"recipient": "local",
+		"logging_frequency": 0,
+		"logging_path": "/path/to/a/logging/folder/progress.log",
+		"resultdir": "/path/to/store/the/results",
+		"job_name": "Reinforcement learning",
+		"job_id": "relevant for remote logging"
+	}
+}
