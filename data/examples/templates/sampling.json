@@ -1,0 +1,17 @@
+{
+  "version": "2.0",
+  "run_type": "sampling",
+  "parameters": {
+    "model_path": "/path/to/generative/model/to/sample/from/augmented.prior",
+    "output_smiles_path": "/path/to/store.the/sampled/smiles/sampled.smi",
+    "num_smiles": 1024,
+    "batch_size": 128,
+    "with_likelihood": false
+  },
+  "logging": {
+    "sender": "this is relevant for remote job submission scenario",
+    "recipient": "local",
+    "logging_path": "/path/to/a/logging/folder/progress.log",
+    "job_name": "sampling"
+  }
+}
