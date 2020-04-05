@@ -1,0 +1,22 @@
+{
+  "version": "2.0",
+  "run_type": "create_model",
+  "parameters": {
+    "output_model_path": "/path/to/new/empty_model.prior",
+    "input_smiles_path": "/representative/collection/of/smiles/to/use/for/training/smiles.smi",
+    "num_layers": 3,
+    "layer_size": 512,
+    "cell_type": "lstm",
+    "embedding_layer_size": 256,
+    "dropout": 0,
+    "max_sequence_length": 256,
+    "layer_normalization": false,
+    "standardize": 0
+  },
+  "logging": {
+    "sender": "this is relevant for remote job submission scenario",
+    "recipient": "local",
+    "logging_path": "/path/to/a/logging/folder/progress.log",
+    "job_name": "new_model"
+  }
+}
