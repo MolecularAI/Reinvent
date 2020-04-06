@@ -27,7 +27,7 @@ The scoring function is built-up from components, which together define the "com
 * `ROTATABLE BONDS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/Cookbook.html#contiguous-rotable-bonds).
 * `NUMBER OF HYDROGEN BOND DONOROS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
 * `NUMBER OF RINGS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html).
-* `SELECTIVITY`: If the aim is to optimize activity against one target while reducing activity agains one more other(s), i.e. to increase selectivity, this component can be used. Uses two [scikit-learn](https://scikit-learn.org/stable/) models. Works with both classification and regression models. One model is predicting the target activity and the other is providing an off-target prediction. The score is reflecting a user defined activity gap between the target and the off-target predictions.
+* `SELECTIVITY`: If the aim is to optimize activity against one target while reducing activity agains another, i.e. to increase compound's selectivity, this component can be used. Uses two [scikit-learn](https://scikit-learn.org/stable/) models. Works with both classification and regression models. One model is predicting the target activity and the other is providing an off-target prediction. The score is reflecting a user defined activity gap between the target and the off-target predictions.
 
 -------------------------------------------------
 To use `tensorboard` for logging:
