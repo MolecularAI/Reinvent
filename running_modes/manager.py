@@ -42,7 +42,7 @@ class Manager:
 
     def _run_reinforcement_learning(self):
         rl_components = ReinforcementLearningComponents(**self.configuration.parameters)
-        scaffold_filter = self._setup_scaffold_filter(rl_components.scaffold_filter)
+        scaffold_filter = self._setup_scaffold_filter(rl_components.diversity_filter)
         scoring_function = self._setup_scoring_function(rl_components.scoring_function)
         rl_config = ReinforcementLearningConfiguration(**rl_components.reinforcement_learning)
         inception_config = InceptionConfiguration(**rl_components.inception)

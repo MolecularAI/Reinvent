@@ -56,7 +56,7 @@ class Test_reinforce_tanimoto_similarity(unittest.TestCase):
         inception_config = InceptionConfiguration(smiles, 100, 10)
         inception = Inception(inception_config, scoring_function, Model.load_from_file(rl_config.prior))
         parameters = ReinforcementLearningComponents(scoring_function=vars(scoring_function),
-                                                     scaffold_filter=vars(scaffold_filter),
+                                                     diversity_filter=vars(scaffold_filter),
                                                      reinforcement_learning=vars(rl_config),
                                                      inception=vars(inception_config))
         configuration = GeneralConfigurationEnvelope(parameters=vars(parameters), logging=vars(logging),
