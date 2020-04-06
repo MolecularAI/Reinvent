@@ -8,7 +8,7 @@ with open(os.path.join(project_root, '../../configs/config.json'), 'r') as f:
 MAIN_TEST_PATH = config["MAIN_TEST_PATH"]
 
 RANDOM_PRIOR_PATH = os.path.join(project_root,  "../../data/augmented.prior")
-SAS_MODEL_PATH = os.path.join(project_root,  "../../data/SA_score_prediction.pkl")
+SAS_MODEL_PATH = os.path.join(project_root,  "../../data/SA_score_prediction.pkl.gz")
 
 
 #TODO: this is a classification model !!! Provide regression!
