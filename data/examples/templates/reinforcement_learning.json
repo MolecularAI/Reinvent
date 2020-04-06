@@ -93,7 +93,7 @@
 				}
 			]
 		},
-		"scaffold_filter": {
+		"diversity_filter": {
 			"name": "IdenticalMurckoScaffold",
 			"nbmax": 25,
 			"minscore": 0.4,
