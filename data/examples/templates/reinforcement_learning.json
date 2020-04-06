@@ -93,11 +93,7 @@
 				}
 			]
 		},
-<<<<<<< HEAD
 		"diversity_filter": {
-=======
-		"scaffold_filter": {
->>>>>>> ec9d1e65adeab3dabefb096861877b8a5e7be629
 			"name": "IdenticalMurckoScaffold",
 			"nbmax": 25,
 			"minscore": 0.4,
