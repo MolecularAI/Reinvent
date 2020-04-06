@@ -49,18 +49,6 @@ class Test_model_validity(unittest.TestCase):
             runner.run()
         self.assertEqual(cm.output, ["INFO:validation_logger:Invalid model"])
 
-<<<<<<< HEAD
-=======
-
-    def test_invalid_model_type(self):
-        self.parameters.specific_parameters[self.cs_enum.SCIKIT] = "classification"
-        runner = ValidationRunner(self.configuration_envelope, self.parameters)
-
-        with self.assertLogs() as cm:
-            runner.run()
-        self.assertEqual(cm.output, ["INFO:validation_logger:Invalid model"])
-
->>>>>>> ec9d1e65adeab3dabefb096861877b8a5e7be629
     def test_invalid_model_descriptors(self):
         descriptor_types = DescriptorTypesEnum()
         self.parameters.specific_parameters[self.cs_enum.DESCRIPTOR_TYPE] = descriptor_types.ECFP
