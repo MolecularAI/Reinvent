@@ -21,12 +21,12 @@ The scoring function is built-up from components, which together define the "com
 * `JACCARD DISTANCE`: Requires a user defined set of SMILES and returns the lowest distance score to the provided set.
 * `MATCHING SUBSTRUCTRE`: This is a penalty component to bias towards generating certain (sub-)structures. Requires a user defined set of SMARTS. Returns 1 if there is a substructure match and 0.5 otherwise.
 * `CUSTOM ALERTS`: This is a penalty component to avoid generating certain (sub-)structures. Requires a user defined set of SMARTS patterns indicating unwanted moieties. Returns 0 if there is a match and 1 otherwise.
-* `QED SCORE`: Uses the QED implementation in `RDKit` [link](http://rdkit.org/docs/source/rdkit.Chem.QED.html).
-* `MOLECULAR WEIGHT`: Physico-chemical property calculated by `RDKit` [link](https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html).
-* `TPSA`: Physico-chemical property calculated by `RDKit` [link](https://www.rdkit.org/docs/RDKit_Book.html#implementation-of-the-tpsa-descriptor).
-* `ROTATABLE BONDS`: Physico-chemical property calculated by `RDKit` [link](https://www.rdkit.org/docs/Cookbook.html#contiguous-rotable-bonds).
-* `NUMBER OF HYDROGEN BOND DONOROS`: Physico-chemical property calculated by `RDKit` [link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
-* `NUMBER OF RINGS`: Physico-chemical property calculated by `RDKit` [link](https://www.rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html).
+* `QED SCORE`: Uses the QED implementation in `RDKit`[link](http://rdkit.org/docs/source/rdkit.Chem.QED.html).
+* `MOLECULAR WEIGHT`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html).
+* `TPSA`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/RDKit_Book.html#implementation-of-the-tpsa-descriptor).
+* `ROTATABLE BONDS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/Cookbook.html#contiguous-rotable-bonds).
+* `NUMBER OF HYDROGEN BOND DONOROS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
+* `NUMBER OF RINGS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html).
 * `SELECTIVITY`: If the aim is to optimize activity against one target while reducing activity agains one more other(s), i.e. to increase selectivity, this component can be used. Uses two [scikit-learn](https://scikit-learn.org/stable/) models. Works with both classification and regression models. One model is predicting the target activity and the other is providing an off-target prediction. The score is reflecting a user defined activity gap between the target and the off-target predictions.
 
 -------------------------------------------------
