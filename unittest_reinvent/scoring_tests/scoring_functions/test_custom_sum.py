@@ -36,7 +36,7 @@ class Test_custom_sum(unittest.TestCase):
 
     def test_special_selectivity_multiplicative_no_sigm_trans_1(self):
         score = self.sf_instance.get_final_score(smiles=["O=S(=O)(c3ccc(n1nc(cc1c2ccc(cc2)C)C(F)(F)F)cc3)N"])
-        self.assertAlmostEqual(score.total_score[0], 0.12587155, 3)
+        self.assertAlmostEqual(score.total_score[0], 0.3631, 3)
 
     def test_special_selectivity_multiplicative_no_sigm_trans_3(self):
         score = self.sf_instance.get_final_score(smiles=["CCCOOOCCCOOO"])

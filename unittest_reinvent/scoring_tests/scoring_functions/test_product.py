@@ -24,4 +24,4 @@ class Test_product(unittest.TestCase):
 
     def test_product_1(self):
         score = self.sf_state.get_final_score(smiles=["O=S(=O)(c3ccc(n1nc(cc1c2ccc(cc2)C)C(F)(F)F)cc3)N"])
-        self.assertAlmostEqual(score.total_score[0], 0.0061989, 3)
+        self.assertAlmostEqual(score.total_score[0], 0.726, 3)

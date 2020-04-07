@@ -3,7 +3,7 @@ import unittest
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.base_log_config import BaseLoggerConfiguration
 from running_modes.validation.validation_runner import ValidationRunner
-from unittest_reinvent.fixtures.paths import MAIN_TEST_PATH, SCIKIT_REGRESSION_PATH
+from unittest_reinvent.fixtures.paths import MAIN_TEST_PATH, ACTIVITY_REGRESSION
 from unittest_reinvent.scoring_tests.fixtures.predictive_model_fixtures import create_activity_component_regression
 from utils.enums.component_specific_parameters_enum import ComponentSpecificParametersEnum
 from utils.enums.descriptor_types_enum import DescriptorTypesEnum
@@ -42,7 +42,7 @@ class Test_model_validity(unittest.TestCase):
         self.assertEqual(cm.output, ["INFO:validation_logger:Valid model"])
 
     def test_invalid_model(self):
-        self.parameters.model_path = "".join([SCIKIT_REGRESSION_PATH, "_NO-MODEL_"])
+        self.parameters.model_path = "".join([ACTIVITY_REGRESSION, "_NO-MODEL_"])
         runner = ValidationRunner(self.configuration_envelope, self.parameters)
 
         with self.assertLogs() as cm:

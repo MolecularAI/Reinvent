@@ -63,7 +63,7 @@ class Test_desirability_multiplicative_function(unittest.TestCase):
 
     def test_desirability_multiplicative_1(self):
         score = self.sf_state.get_final_score(smiles=["CCC"])
-        self.assertAlmostEqual(score.total_score[0], 0.001368927, 3)
+        self.assertAlmostEqual(score.total_score[0], 0.180, 3)
 
     def test_desirability_multiplicative_4(self):
         score = self.sf_state.get_final_score(smiles=["C1CCCCCCCCC1", "12"])

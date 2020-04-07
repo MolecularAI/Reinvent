@@ -33,5 +33,5 @@ class Test_selectivity_multiplicative_function(unittest.TestCase):
 
     def test_special_selectivity_multiplicative_1(self):
         score = self.sf_state.get_final_score(smiles=["O=S(=O)(c3ccc(n1nc(cc1c2ccc(cc2)C)C(F)(F)F)cc3)N"])
-        self.assertAlmostEqual(score.total_score[0], 0.010293521, 3)
+        self.assertAlmostEqual(score.total_score[0], 0.3665, 3)
 
