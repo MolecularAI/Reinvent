@@ -11,7 +11,7 @@ RANDOM_PRIOR_PATH = os.path.join(project_root,  "../../data/augmented.prior")
 SAS_MODEL_PATH = os.path.join(project_root,  "../../data/SA_score_prediction.pkl.gz")
 
 
-#TODO: this is a classification model !!! Provide regression!
-SCIKIT_REGRESSION_PATH = os.path.join(project_root,  "../../data/B-RAF_model.pkl")
+ACTIVITY_REGRESSION = os.path.join(project_root, "../../data/B-RAF_model.pkl")
+OFFTARGET_ACTIVITY_REGRESSION = os.path.join(project_root, "../../data/Aurora_model.pkl")
 ACTIVITY_CLASSIFICATION = os.path.join(project_root,  "../../data/drd2.pkl")
 SMILES_SET_PATH = os.path.join(project_root,  "../../data/smiles.smi")

@@ -2,7 +2,7 @@ import unittest
 
 from scoring.component_parameters import ComponentParameters
 from scoring.score_components import SelectivityComponent
-from unittest_reinvent.fixtures.paths import SCIKIT_REGRESSION_PATH
+from unittest_reinvent.fixtures.paths import ACTIVITY_REGRESSION
 from unittest_reinvent.scoring_tests.fixtures.predictive_model_fixtures import create_activity_component_regression, \
     create_offtarget_activity_component_regression, create_offtarget_activity_component_classification, \
     create_activity_component_classification
@@ -52,7 +52,7 @@ class Test_mixed_selectivity_component(ScoringTest, unittest.TestCase):
 
     def test_selectivity_component(self):
         smiles = ["O=S(=O)(c3ccc(n1nc(cc1c2ccc(cc2)C)C(F)(F)F)cc3)N", "CCCC"]
-        expected_values = [0.01, 0.01]
+        expected_values = [0.871, 0.866]
         scores = self.multiple_scores(smiles)
         npt.assert_almost_equal(scores, expected_values, decimal=3)
 
@@ -128,7 +128,7 @@ class Test_regression_selectivity_component(ScoringTest, unittest.TestCase):
                                           model_path="",
                                           specific_parameters={
                                                "activity_model_path": activity.model_path,
-                                               "offtarget_model_path": SCIKIT_REGRESSION_PATH,
+                                               "offtarget_model_path": ACTIVITY_REGRESSION,
                                                "activity_specific_parameters": activity.specific_parameters.copy(),
                                                "offtarget_specific_parameters": off_activity.specific_parameters.copy(),
                                                "delta_transformation_parameters": delta_params
@@ -137,6 +137,6 @@ class Test_regression_selectivity_component(ScoringTest, unittest.TestCase):
 
     def test_selectivity_component(self):
         smiles = ["Cn1cc(c([NH])cc1=O)", "O=S(=O)(c3ccc(n1nc(cc1c2ccc(cc2)C)C(F)(F)F)cc3)N"]
-        expected_values = [0.01, 0.01]
+        expected_values = [0.053, 0.053]
         scores = self.multiple_scores(smiles)
         npt.assert_almost_equal(scores, expected_values, decimal=3)
