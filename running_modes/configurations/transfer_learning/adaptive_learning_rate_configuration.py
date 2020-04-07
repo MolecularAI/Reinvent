@@ -3,14 +3,14 @@ from dataclasses import dataclass
 
 @dataclass
 class AdaptiveLearningRateConfiguration:
-    mode = "constant"
-    gamma = 0.8
-    step = 1
-    start = 5E-4
-    min = 1E-5
-    threshold = 1E-4
-    average_steps = 4
-    patience = 8
-    restart_value = 1E-5
-    sample_size = 100
-    restart_times = 0
+    mode: str = "constant"
+    gamma: float = 0.8
+    step: int = 1
+    start: float = 5E-4
+    min: float = 1E-5
+    threshold: float = 1E-4
+    average_steps: int = 4
+    patience: int = 8
+    restart_value: float = 1E-5
+    sample_size: int = 100
+    restart_times: int = 0
