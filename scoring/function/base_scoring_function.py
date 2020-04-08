@@ -51,8 +51,8 @@ class BaseScoringFunction(ABC):
                        valid_indices: List[int]) -> FinalSummary:
 
         penalty = self._compute_penalty_components(summaries, smiles)
-        non_penlaty = self._compute_non_penalty_components(summaries, smiles)
-        product = penalty * non_penlaty
+        non_penalty = self._compute_non_penalty_components(summaries, smiles)
+        product = penalty * non_penalty
         final_summary = self._create_final_summary(product, summaries, smiles, summaries, valid_indices)
 
         return final_summary

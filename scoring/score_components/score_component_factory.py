@@ -12,9 +12,9 @@ from utils.enums.scoring_function_component_enum import ScoringFunctionComponent
 class ScoreComponentFactory:
     def __init__(self, parameters: List[ComponentParameters]):
         self._parameters = parameters
-        self._current_components = self._deafult_scoring_component_registry()
+        self._current_components = self._default_scoring_component_registry()
 
-    def _deafult_scoring_component_registry(self) -> dict:
+    def _default_scoring_component_registry(self) -> dict:
         enum = ScoringFunctionComponentNameEnum()
         component_map = {
             enum.MATCHING_SUBSTRUCTURE: MatchingSubstructure,
