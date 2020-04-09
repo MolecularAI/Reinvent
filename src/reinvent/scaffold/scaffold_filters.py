@@ -4,9 +4,9 @@ import os
 import pandas as pd
 from typing import List
 
-from scaffold.scaffold_parameters import ScaffoldParameters
-from scoring.score_summary import FinalSummary, ComponentSummary
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
+from .scaffold_parameters import ScaffoldParameters
+from ..scoring.score_summary import FinalSummary, ComponentSummary
+from ..utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
 
 
 class ScaffoldFilter(object, metaclass=abc.ABCMeta):

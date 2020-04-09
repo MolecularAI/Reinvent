@@ -2,11 +2,11 @@ from abc import abstractmethod
 import numpy as np
 from typing import List
 
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components.base_score_component import BaseScoreComponent
-from scoring.score_summary import ComponentSummary
-from scoring.score_transformations import TransformationFactory
-from utils.enums.transformation_type_enum import TransformationTypeEnum
+from ...component_parameters import ComponentParameters
+from ..base_score_component import BaseScoreComponent
+from ...score_summary import ComponentSummary
+from ...score_transformations import TransformationFactory
+from ....utils.enums.transformation_type_enum import TransformationTypeEnum
 
 
 class BasePhysChemComponent(BaseScoreComponent):

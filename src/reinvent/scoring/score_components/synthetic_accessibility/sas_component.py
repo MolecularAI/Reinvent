@@ -5,10 +5,10 @@ import numpy as np
 from rdkit import DataStructs
 from rdkit.Chem import AllChem, Descriptors
 
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components.base_score_component import BaseScoreComponent
-from scoring.score_components.synthetic_accessibility.sascorer import calculateScore
-from scoring.score_summary import ComponentSummary
+from ...component_parameters import ComponentParameters
+from ..base_score_component import BaseScoreComponent
+from .sascorer import calculateScore
+from ...score_summary import ComponentSummary
 
 
 class SASComponent(BaseScoreComponent):

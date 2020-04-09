@@ -5,7 +5,7 @@ from rdkit import Chem, DataStructs
 from rdkit.Chem import AllChem, MACCSkeys
 from rdkit.Avalon import pyAvalonTools
 
-from reinvent.scoring.score_transformations import TransformationFactory
+from .scoring.score_transformations import TransformationFactory
 
 
 class ModelContainer():

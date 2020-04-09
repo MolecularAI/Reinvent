@@ -1,12 +1,17 @@
 from typing import List
 
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components import TanimotoSimilarity, \
-    JaccardDistance, CustomAlerts, QedScore, MatchingSubstructure, \
-    PredictivePropertyComponent, SelectivityComponent, \
-    SASComponent, MolWeight, PSA, RotatableBonds, HBD_Lipinski, NumRings
-from scoring.score_components.base_score_component import BaseScoreComponent
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
+from ..component_parameters import ComponentParameters
+from .jaccard_distance import JaccardDistance
+from .custom_alerts_component import CustomAlerts
+from .qed_score import QedScore
+from .tanimoto_similarity import TanimotoSimilarity
+from .matching_substructure import MatchingSubstructure
+from .predictive_property_component import PredictivePropertyComponent
+from .selectivity_component import SelectivityComponent
+from .synthetic_accessibility import SASComponent
+from .physchem import MolWeight, PSA, RotatableBonds, HBD_Lipinski, NumRings
+from .base_score_component import BaseScoreComponent
+from ...utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
 
 
 class ScoreComponentFactory:

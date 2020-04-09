@@ -1,5 +1,8 @@
-from scaffold import IdenticalMurckoScaffold, IdenticalTopologicalScaffold, ScaffoldSimilarity, NoScaffoldFilter
-from scaffold.scaffold_parameters import ScaffoldParameters
+from .identical_murcko_scaffold import IdenticalMurckoScaffold
+from .identical_topological_scaffold import IdenticalTopologicalScaffold
+from .scaffold_similarity import ScaffoldSimilarity
+from .no_scaffold_filter import NoScaffoldFilter
+from .scaffold_parameters import ScaffoldParameters
 
 
 class ScaffoldFilterFactory:

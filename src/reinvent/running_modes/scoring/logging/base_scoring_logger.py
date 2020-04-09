@@ -3,9 +3,9 @@ import logging
 import os
 from abc import ABC, abstractmethod
 
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.scoring_log_configuration import ScoringLoggerConfiguration
-from scoring.score_summary import FinalSummary
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations.logging.scoring_log_configuration import ScoringLoggerConfiguration
+from ....scoring.score_summary import FinalSummary
 
 
 class BaseScoringLogger(ABC):

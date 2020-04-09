@@ -3,10 +3,10 @@ import os
 
 import requests
 
-import utils.logging.log as utils_log
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.scoring.logging.base_scoring_logger import BaseScoringLogger
-from scoring.score_summary import FinalSummary
+from ....utils.logging import log as utils_log
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...scoring.logging.base_scoring_logger import BaseScoringLogger
+from ....scoring.score_summary import FinalSummary
 
 
 class RemoteScoringLogger(BaseScoringLogger):

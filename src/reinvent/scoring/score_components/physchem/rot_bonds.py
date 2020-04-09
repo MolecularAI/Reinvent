@@ -1,6 +1,6 @@
 from rdkit.Chem.Lipinski import NumRotatableBonds
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components.physchem.base_physchem_component import BasePhysChemComponent
+from ...component_parameters import ComponentParameters
+from .base_physchem_component import BasePhysChemComponent
 
 
 class RotatableBonds(BasePhysChemComponent):
