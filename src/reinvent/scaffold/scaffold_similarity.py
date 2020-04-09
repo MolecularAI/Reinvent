@@ -6,10 +6,10 @@ from rdkit import DataStructs
 from rdkit.Chem.AtomPairs import Pairs
 from rdkit.Chem.Scaffolds import MurckoScaffold
 
-from scaffold.scaffold_filters import ScaffoldFilter
-from scaffold.scaffold_parameters import ScaffoldParameters
-from scoring.score_summary import FinalSummary
-from utils.smiles import convert_to_rdkit_smiles
+from .scaffold_filters import ScaffoldFilter
+from .scaffold_parameters import ScaffoldParameters
+from ..scoring.score_summary import FinalSummary
+from ..utils.smiles import convert_to_rdkit_smiles
 
 
 class ScaffoldSimilarity(ScaffoldFilter):

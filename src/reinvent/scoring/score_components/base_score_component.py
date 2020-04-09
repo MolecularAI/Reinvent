@@ -4,9 +4,9 @@ from typing import List
 from rdkit import Chem
 from rdkit.Chem import AllChem
 
-from scoring.component_parameters import ComponentParameters
-from scoring.score_summary import ComponentSummary
-from utils.enums.component_specific_parameters_enum import ComponentSpecificParametersEnum
+from ..component_parameters import ComponentParameters
+from ..score_summary import ComponentSummary
+from ...utils.enums.component_specific_parameters_enum import ComponentSpecificParametersEnum
 
 
 class BaseScoreComponent(ABC):

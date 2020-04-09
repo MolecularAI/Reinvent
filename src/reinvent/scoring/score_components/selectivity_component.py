@@ -2,11 +2,11 @@ import pickle
 
 from typing import List
 
-from model_container import ModelContainer
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components.base_score_component import BaseScoreComponent
-from scoring.score_summary import ComponentSummary
-from scoring.score_transformations import TransformationFactory
+from ...model_container import ModelContainer
+from ..component_parameters import ComponentParameters
+from .base_score_component import BaseScoreComponent
+from ..score_summary import ComponentSummary
+from ..score_transformations import TransformationFactory
 
 
 class SelectivityComponent(BaseScoreComponent):

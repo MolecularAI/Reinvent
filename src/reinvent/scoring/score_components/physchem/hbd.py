@@ -1,6 +1,6 @@
 from rdkit.Chem.Lipinski import NumHDonors
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components.physchem.base_physchem_component import BasePhysChemComponent
+from ...component_parameters import ComponentParameters
+from .base_physchem_component import BasePhysChemComponent
 
 
 class HBD_Lipinski(BasePhysChemComponent):
