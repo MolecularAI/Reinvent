@@ -5,10 +5,10 @@ from abc import ABC, abstractmethod
 import numpy as np
 import torch
 
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
-from running_modes.reinforcement_learning.inception import Inception
-from scoring.score_summary import FinalSummary
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
+from ..inception import Inception
+from ....scoring.score_summary import FinalSummary
 
 
 class BaseReinforcementLogger(ABC):

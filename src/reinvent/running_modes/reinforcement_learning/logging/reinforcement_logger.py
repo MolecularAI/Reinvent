@@ -1,9 +1,9 @@
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
-from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
-from running_modes.reinforcement_learning.logging import LocalReinforcementLogger
-from running_modes.reinforcement_learning.logging.remote_reinforcement_logger import RemoteReinforcementLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
+from .base_reinforcement_logger import BaseReinforcementLogger
+from .local_reinforcement_logger import LocalReinforcementLogger
+from .remote_reinforcement_logger import RemoteReinforcementLogger
+from ....utils.enums.logging_mode_enum import LoggingModeEnum
 
 
 class ReinforcementLogger:

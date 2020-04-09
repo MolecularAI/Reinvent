@@ -1,11 +1,11 @@
 import numpy as np
 import requests
 
-import utils.logging.log as utils_log
-import utils as utils_general
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.sampling.logging.base_sampling_logger import BaseSamplingLogger
-from utils.logging.visualization import mol_to_png_string
+from ....utils.logging import log as utils_log
+from .... import utils as utils_general
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from .base_sampling_logger import BaseSamplingLogger
+from ....utils.logging.visualization import mol_to_png_string
 
 
 class RemoteSamplingLogger(BaseSamplingLogger):

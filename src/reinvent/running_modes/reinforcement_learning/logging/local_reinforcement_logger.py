@@ -4,14 +4,14 @@ import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-import utils.logging.reinforcement_learning as ul_rl
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.reinforcement_learning.logging import ConsoleMessage
-from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
-from scoring.score_summary import FinalSummary
-from utils import fraction_valid_smiles
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
-from utils.logging.tensorboard import add_mols
+from ....utils.logging import reinforcement_learning as ul_rl
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from .console_message import ConsoleMessage
+from .base_reinforcement_logger import BaseReinforcementLogger
+from ....scoring.score_summary import FinalSummary
+from ....utils import fraction_valid_smiles
+from ....utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
+from ....utils.logging.tensorboard import add_mols
 
 
 class LocalReinforcementLogger(BaseReinforcementLogger):

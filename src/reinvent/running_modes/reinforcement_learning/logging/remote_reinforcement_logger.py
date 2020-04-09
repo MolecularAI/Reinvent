@@ -4,14 +4,14 @@ import numpy as np
 import requests
 import torch
 
-import utils.logging.log as ull
-import utils.logging.reinforcement_learning as ul_rl
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
-from scoring.score_summary import FinalSummary
-from utils import fraction_valid_smiles
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
-from utils.logging.visualization import mol_to_png_string
+from ....utils.logging import log as ull
+from ....utils.logging import reinforcement_learning as ul_rl
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
+from ....scoring.score_summary import FinalSummary
+from ....utils import fraction_valid_smiles
+from ....utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
+from ....utils.logging.visualization import mol_to_png_string
 
 
 class RemoteReinforcementLogger(BaseReinforcementLogger):

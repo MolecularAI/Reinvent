@@ -1,10 +1,10 @@
 import numpy as np
 import tqdm
 
-import models.model as reinvent
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.compound_sampling.sample_from_model_configuration import SampleFromModelConfiguration
-from running_modes.sampling.logging.sampling_logger import SamplingLogger
+from ...models import model as reinvent
+from ..configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ..configurations.compound_sampling.sample_from_model_configuration import SampleFromModelConfiguration
+from .logging.sampling_logger import SamplingLogger
 
 
 class SampleFromModelRunner:

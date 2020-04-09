@@ -1,7 +1,7 @@
 import pandas as pd
 
-from running_modes.configurations.reinforcement_learning.inception_configuration import InceptionConfiguration
-from utils.smiles import convert_to_rdkit_smiles
+from ..configurations.reinforcement_learning.inception_configuration import InceptionConfiguration
+from ...utils.smiles import convert_to_rdkit_smiles
 
 
 class Inception:

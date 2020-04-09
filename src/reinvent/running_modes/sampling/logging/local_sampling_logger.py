@@ -1,11 +1,11 @@
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
 
-import utils as utils_general
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.sampling_log_configuration import SamplingLoggerConfiguration
-from running_modes.sampling.logging.base_sampling_logger import BaseSamplingLogger
-from utils.logging.tensorboard import add_mols
+from .... import utils as utils_general
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations.logging.sampling_log_configuration import SamplingLoggerConfiguration
+from .base_sampling_logger import BaseSamplingLogger
+from ....utils.logging.tensorboard import add_mols
 
 
 class LocalSamplingLogger(BaseSamplingLogger):

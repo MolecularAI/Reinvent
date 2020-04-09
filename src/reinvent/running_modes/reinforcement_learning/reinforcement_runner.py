@@ -3,14 +3,14 @@ import time
 import numpy as np
 import torch
 
-from models.model import Model
-from running_modes.configurations import GeneralConfigurationEnvelope, ReinforcementLearningConfiguration
-from running_modes.reinforcement_learning.inception import Inception
-from running_modes.reinforcement_learning.logging import ReinforcementLogger
-from scaffold.scaffold_filters import ScaffoldFilter
-from scoring.function.base_scoring_function import BaseScoringFunction
-from scoring.score_summary import FinalSummary
-from utils import to_tensor, get_indices_of_unique_smiles
+from ...models.model import Model
+from ..configurations import GeneralConfigurationEnvelope, ReinforcementLearningConfiguration
+from .inception import Inception
+from .logging import ReinforcementLogger
+from ...scaffold.scaffold_filters import ScaffoldFilter
+from ...scoring.function.base_scoring_function import BaseScoringFunction
+from ...scoring.score_summary import FinalSummary
+from ...utils import to_tensor, get_indices_of_unique_smiles
 
 
 class ReinforcementRunner:
