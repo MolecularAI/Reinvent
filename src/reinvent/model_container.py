@@ -3,7 +3,6 @@ from typing import List
 import numpy as np
 from rdkit import Chem, DataStructs
 from rdkit.Chem import AllChem, MACCSkeys
-from rdkit.Avalon import pyAvalonTools
 
 from .scoring.score_transformations import TransformationFactory
 
@@ -134,6 +133,7 @@ class ModelContainer():
         return fingerprints
 
     def _avalon(self, molecules: List, parameters: {}):
+        from rdkit.Avalon import pyAvalonTools
         size = parameters.get('size', 512)
         fingerprints = []
         fps = [pyAvalonTools.GetAvalonFP(mol) for mol in molecules]
