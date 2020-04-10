@@ -98,3 +98,14 @@ brew install rdkit --with-inchi --with-postgresql --with-pycairo --with-avalon
 mkvirtualenv reinvent  # or whatever you want to call it
 ln -s /usr/local/Cellar/rdkit/HEAD-be9349b/lib/python3.8/site-packages/rdkit/ ~/.virtualenvs/reinvent/lib/python3.8/site-packages/rdkit
 ```
+
+## Demos
+
+### Reinforcement learning using Aurora model
+
+```python
+from reinvent.demo import reinforcement_learning_demo_config
+from reinvent import run
+
+run(reinforcement_learning_demo_config)
+```
