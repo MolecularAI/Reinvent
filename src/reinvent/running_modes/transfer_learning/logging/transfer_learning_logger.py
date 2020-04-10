@@ -1,9 +1,9 @@
 from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.transfer_learning_log_configuration import TransferLearningLoggerConfig
-from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
-from running_modes.transfer_learning.logging.local_transfer_learning_logger import LocalTransferLearningLogger
-from running_modes.transfer_learning.logging.remote_transfer_learning_logger import RemoteTransferLearningLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from ...configurations.logging.transfer_learning_log_configuration import TransferLearningLoggerConfig
+from .base_transfer_learning_logger import BaseTransferLearningLogger
+from .local_transfer_learning_logger import LocalTransferLearningLogger
+from .remote_transfer_learning_logger import RemoteTransferLearningLogger
+from ....utils.enums.logging_mode_enum import LoggingModeEnum
 
 
 class TransferLearningLogger:

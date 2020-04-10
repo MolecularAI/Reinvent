@@ -2,9 +2,9 @@ from typing import List
 
 import numpy as np
 
-from scoring.component_parameters import ComponentParameters
-from scoring.function.base_scoring_function import BaseScoringFunction
-from scoring.score_summary import ComponentSummary
+from ...scoring.component_parameters import ComponentParameters
+from .base_scoring_function import BaseScoringFunction
+from ...scoring.score_summary import ComponentSummary
 
 
 class CustomSum(BaseScoringFunction):

@@ -1,23 +1,23 @@
-import utils.general as utils_general
-from models.model import Model
-from running_modes.configurations import TransferLearningConfiguration, ScoringRunnerConfiguration, \
+from ..utils import general as utils_general
+from ..models.model import Model
+from .configurations import TransferLearningConfiguration, ScoringRunnerConfiguration, \
     ReinforcementLearningConfiguration, SampleFromModelConfiguration, CreateModelConfiguration, \
     AdaptiveLearningRateConfiguration, InceptionConfiguration, ReinforcementLearningComponents, \
     GeneralConfigurationEnvelope, ScoringRunnerComponents
-from running_modes.create_model.create_model import CreateModelRunner
-from running_modes.reinforcement_learning.inception import Inception
-from running_modes.reinforcement_learning.reinforcement_runner import ReinforcementRunner
-from running_modes.sampling.sample_from_model import SampleFromModelRunner
-from running_modes.scoring.scoring_runner import ScoringRunner
-from running_modes.transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
-from running_modes.transfer_learning.transfer_learning_runner import TransferLearningRunner
-from running_modes.validation.validation_runner import ValidationRunner
-from scaffold.scaffold_filter_factory import ScaffoldFilterFactory
-from scaffold.scaffold_parameters import ScaffoldParameters
-from scoring.component_parameters import ComponentParameters
-from scoring.scoring_function_factory import ScoringFunctionFactory
-from scoring.scoring_function_parameters import ScoringFuncionParameters
-from utils.enums.running_mode_enum import RunningModeEnum
+from .create_model.create_model import CreateModelRunner
+from .reinforcement_learning.inception import Inception
+from .reinforcement_learning.reinforcement_runner import ReinforcementRunner
+from .sampling.sample_from_model import SampleFromModelRunner
+from .scoring.scoring_runner import ScoringRunner
+from .transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
+from .transfer_learning.transfer_learning_runner import TransferLearningRunner
+from .validation.validation_runner import ValidationRunner
+from ..scaffold.scaffold_filter_factory import ScaffoldFilterFactory
+from ..scaffold.scaffold_parameters import ScaffoldParameters
+from ..scoring.component_parameters import ComponentParameters
+from ..scoring.scoring_function_factory import ScoringFunctionFactory
+from ..scoring.scoring_function_parameters import ScoringFuncionParameters
+from ..utils.enums.running_mode_enum import RunningModeEnum
 
 
 class Manager:

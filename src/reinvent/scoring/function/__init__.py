@@ -1,2 +1,2 @@
-from scoring.function.custom_product import CustomProduct
-from scoring.function.custom_sum import CustomSum
+from .custom_product import CustomProduct
+from .custom_sum import CustomSum

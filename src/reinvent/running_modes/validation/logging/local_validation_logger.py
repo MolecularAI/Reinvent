@@ -1,5 +1,5 @@
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.validation.logging.base_validation_logger import BaseValidationLogger
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from .base_validation_logger import BaseValidationLogger
 
 
 class LocalValidationLogger(BaseValidationLogger):

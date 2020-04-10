@@ -1,9 +1,9 @@
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.validation.logging.validation_logger import ValidationLogger
-from scoring.component_parameters import ComponentParameters
-from scoring.score_components import PredictivePropertyComponent
+from ..configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from .logging.validation_logger import ValidationLogger
+from ...scoring.component_parameters import ComponentParameters
+from ...scoring.score_components import PredictivePropertyComponent
 
-import utils.smiles as chem_smiles
+from ...utils import smiles as chem_smiles
 
 
 class ValidationRunner:

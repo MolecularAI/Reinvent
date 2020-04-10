@@ -3,8 +3,8 @@ import sys
 
 import requests
 
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.create_model_log_configuration import CreateModelLoggerConfiguration
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations.logging.create_model_log_configuration import CreateModelLoggerConfiguration
 
 
 class RemoteCreateModelLogger:

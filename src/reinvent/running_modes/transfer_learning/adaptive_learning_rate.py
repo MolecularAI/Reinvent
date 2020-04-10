@@ -2,14 +2,14 @@ import numpy as np
 import scipy.stats as sps
 import torch
 
-import models.dataset as md
-import models.model as mm
-import utils.smiles as chem_smiles
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.transfer_learning.adaptive_learning_rate_configuration import \
+from ...models import dataset as md
+from ...models import model as mm
+from ...utils import smiles as chem_smiles
+from ..configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ..configurations.transfer_learning.adaptive_learning_rate_configuration import \
     AdaptiveLearningRateConfiguration
-from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
-from utils.enums.adaptive_learning_rate_enum import AdaptiveLearningRateEnum
+from .logging.transfer_learning_logger import TransferLearningLogger
+from ...utils.enums.adaptive_learning_rate_enum import AdaptiveLearningRateEnum
 
 
 class AdaptiveLearningRate:

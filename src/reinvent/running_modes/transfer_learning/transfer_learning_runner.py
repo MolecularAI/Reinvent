@@ -3,12 +3,12 @@ import torch
 import torch.nn.utils as tnnu
 import tqdm
 
-import models.dataset as reinvent_dataset
-import models.vocabulary as reinvent_vocabulary
-import utils.smiles as chem_smiles
-from models.model import Model
-from running_modes.configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
-from running_modes.transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
+from ...models import dataset as reinvent_dataset
+from ...models import vocabulary as reinvent_vocabulary
+from ...utils import smiles as chem_smiles
+from ...models.model import Model
+from ..configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
+from .adaptive_learning_rate import AdaptiveLearningRate
 
 rdkit.rdBase.DisableLog("rdApp.error")
 

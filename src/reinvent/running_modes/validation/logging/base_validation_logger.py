@@ -2,8 +2,8 @@ import logging
 import sys
 from abc import ABC, abstractmethod
 
-from running_modes.configurations import BaseLoggerConfiguration
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ...configurations import BaseLoggerConfiguration
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 
 
 class BaseValidationLogger(ABC):

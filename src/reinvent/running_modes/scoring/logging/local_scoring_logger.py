@@ -3,10 +3,10 @@ import os
 
 import pandas as pd
 
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.scoring.logging.base_scoring_logger import BaseScoringLogger
-from scoring.score_summary import FinalSummary
-from utils.enums.scoring_runner_enum import ScoringRunnerEnum
+from ...configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from .base_scoring_logger import BaseScoringLogger
+from ....scoring.score_summary import FinalSummary
+from ....utils.enums.scoring_runner_enum import ScoringRunnerEnum
 
 
 class LocalScoringLogger(BaseScoringLogger):

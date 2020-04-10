@@ -1,9 +1,9 @@
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.scoring.scoring_runner_configuration import ScoringRunnerConfiguration
-from running_modes.scoring.logging.scoring_logger import ScoringLogger
-from scoring.function.base_scoring_function import BaseScoringFunction
-from scoring.score_summary import FinalSummary
-from utils.smiles import read_smiles_file
+from ..configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from ..configurations.scoring.scoring_runner_configuration import ScoringRunnerConfiguration
+from .logging.scoring_logger import ScoringLogger
+from ...scoring.function.base_scoring_function import BaseScoringFunction
+from ...scoring.score_summary import FinalSummary
+from ...utils.smiles import read_smiles_file
 
 
 class ScoringRunner:
