@@ -87,3 +87,14 @@ Integration tests are decorated with `@pytest.mark.integration`. You can easily 
 ```
 python -m pytest -m "not integration" --strict-markers unittest_reinvent/
 ```
+
+
+## RDKit with Brew / Virtual Environment
+
+If you're using a virtual environment instead of conda, you can symlink RDKit in with the following command:
+
+```bash
+brew install rdkit --with-inchi --with-postgresql --with-pycairo --with-avalon
+mkvirtualenv reinvent  # or whatever you want to call it
+ln -s /usr/local/Cellar/rdkit/HEAD-be9349b/lib/python3.8/site-packages/rdkit/ ~/.virtualenvs/reinvent/lib/python3.8/site-packages/rdkit
+```

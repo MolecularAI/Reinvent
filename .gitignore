@@ -13,4 +13,4 @@ htmlcov/
 
 # Python memory_profiler output
 mprofile_*.dat
-requirements.txt
+src/reinvent.egg-info/
