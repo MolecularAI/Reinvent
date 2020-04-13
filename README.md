@@ -15,7 +15,7 @@ Templates have to be edited before using. The only thing that needs modification
 
 Tutorials / `jupyter` notebooks
 -----
-There is another repository containing usefule `jupyter` notebooks related to `REINVENT` called [ReinventCommunity](https://github.com/MolecularAI/ReinventCommunity). Currently, it contains notebooks to illustrate the Reinforcement Learning mode and the score transformation functionality (including how to find appropriate parameters for a component). Note, that the latter uses a different `conda` environment to execute.
+There is another repository containing usefule `jupyter` notebooks related to `REINVENT` called **[ReinventCommunity](https://github.com/MolecularAI/ReinventCommunity)**. Currently, it contains notebooks to illustrate the Reinforcement Learning mode and the score transformation functionality (including how to find appropriate parameters for a component). Note, that the latter uses a different `conda` environment to execute.
 
 Available components
 -----
