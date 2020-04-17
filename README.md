@@ -4,7 +4,7 @@ The application in this repository is described in the paper: "REINVENT 2.0 – 
 Usage
 -----
 
-1. Templates for inputs are provided in `reinvent/data/examples/templates` folder. More examples will follow.
+1. Templates for inputs are provided in `reinvent/data/examples/templates` folder. Concrete examples for a quick start are provided in **[ReinventCommunity](https://github.com/MolecularAI/ReinventCommunity)**.
 2. There are templates for 6 running modes. Each running mode can be executed by "python input.py some_running_mode.json" after activating the environment.
 Templates have to be edited before using. The only thing that needs modification for a standard run are the file and folder paths. Most running modes produce logs that can be monitored by `tensorboard`, see below.
    * Logging folder is defined by setting a valid path to the "logging_path" field in json. This is required for all running modes.
