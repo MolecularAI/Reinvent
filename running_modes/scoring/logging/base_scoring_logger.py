@@ -12,6 +12,7 @@ class BaseScoringLogger(ABC):
     def __init__(self, configuration: GeneralConfigurationEnvelope):
         self._configuration = configuration
         self._log_config = ScoringLoggerConfiguration(**self._configuration.logging)
+        self._setup_workfolder()
         self._logger = self._setup_logger()
 
     @abstractmethod
@@ -42,3 +43,7 @@ class BaseScoringLogger(ABC):
             logger.setLevel(logging.INFO)
         logger.propagate = False
         return logger
+
+    def _setup_workfolder(self):
+        if not os.path.isdir(self._log_config.logging_path):
+            os.makedirs(self._log_config.logging_path)
