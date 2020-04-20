@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import tqdm
 
@@ -12,11 +13,18 @@ class SampleFromModelRunner:
 
     def __init__(self, main_config: GeneralConfigurationEnvelope, configuration: SampleFromModelConfiguration):
         self._model = reinvent.Model.load_from_file(configuration.model_path, sampling_mode=True)
-        self._output = open(configuration.output_smiles_path, "wt+")
+        self._output = self._open_output(path=configuration.output_smiles_path)
         self._num_smiles = configuration.num_smiles
         self._batch_size = configuration.batch_size
         self._with_likelihood = configuration.with_likelihood
         self._logger = SamplingLogger(main_config)
+
+    def _open_output(self, path):
+        try:
+            os.mkdir(os.path.dirname(path))
+        except FileExistsError:
+            pass
+        return open(path, "wt+")
 
     def __del__(self):
         self._output.close()
