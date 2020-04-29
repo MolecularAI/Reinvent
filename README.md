@@ -79,7 +79,7 @@ Tests - currently the number of tests is significantly reduced for this repo.
 Before running unit tests make sure to set up your `config.json`. Use the provided `configs/example.config.json`, rename it to `configs/config.json` and update the `USER_NAME` and `MAIN_TEST_PATH` variables. This file will not be version-controlled.
 The tests can be executed using `Unittest`:
 ```
-python -m unittest
+python main_test.py
 ```
 
 Or using Pytest:
