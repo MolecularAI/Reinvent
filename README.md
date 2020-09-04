@@ -29,7 +29,8 @@ The scoring function is built-up from components, which together define the "com
 * `MOLECULAR WEIGHT`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Descriptors.html).
 * `TPSA`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/RDKit_Book.html#implementation-of-the-tpsa-descriptor).
 * `ROTATABLE BONDS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/Cookbook.html#contiguous-rotable-bonds).
-* `NUMBER OF HYDROGEN BOND DONOROS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
+* `NUMBER OF HYDROGEN BOND DONORS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
+* `NUMBER OF HYDROGEN BOND ACCEPTORS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.Lipinski.html).
 * `NUMBER OF RINGS`: Physico-chemical property calculated by `RDKit`[link](https://www.rdkit.org/docs/source/rdkit.Chem.rdMolDescriptors.html).
 * `SELECTIVITY`: If the aim is to optimize activity against one target while reducing activity agains another, i.e. to increase compound's selectivity, this component can be used. Uses two [scikit-learn](https://scikit-learn.org/stable/) models. Works with both classification and regression models. One model is predicting the target activity and the other is providing an off-target prediction. The score is reflecting a user defined activity gap between the target and the off-target predictions.
 
