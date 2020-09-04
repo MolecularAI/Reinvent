@@ -197,6 +197,19 @@
 						"transformation": true
 					}
 				},
+                {
+					"component_type": "num_hba_lipinski",
+					"name": "HB-acceptors (Lipinski)",
+					"weight": 1,
+					"model_path": null,
+					"smiles": [],
+					"specific_parameters": {
+						"transformation_type": "step",
+						"high": 5,
+						"low": 0,
+						"transformation": true
+					}
+				},
 				{
 					"component_type": "num_rings",
 					"name": "Number of rings",

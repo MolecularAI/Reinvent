@@ -14,6 +14,7 @@ class ScoringFunctionComponentNameEnum():
     __MOLECULAR_WEIGHT = "molecular_weight"
     __NUM_ROTATABLE_BONDS = "num_rotatable_bonds"
     __NUM_HBD_LIPINSKI = "num_hbd_lipinski"
+    __NUM_HBA_LIPINSKI = "num_hba_lipinski"
     __NUM_RINGS = "num_rings"
     __TPSA = "tpsa"
     __TOTAL_SCORE = "total_score" # there is no actual component corresponding to this type
@@ -146,6 +147,14 @@ class ScoringFunctionComponentNameEnum():
 
     @NUM_HBD_LIPINSKI.setter
     def NUM_HBD_LIPINSKI(self, value):
+        raise ValueError("Do not assign value to a ScoringFunctionComponentNameEnum field")
+
+    @property
+    def NUM_HBA_LIPINSKI(self):
+        return self.__NUM_HBA_LIPINSKI
+
+    @NUM_HBA_LIPINSKI.setter
+    def NUM_HBA_LIPINSKI(self, value):
         raise ValueError("Do not assign value to a ScoringFunctionComponentNameEnum field")
 
     @property
