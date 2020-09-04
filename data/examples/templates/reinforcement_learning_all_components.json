@@ -210,6 +210,22 @@
 						"transformation": true
 					}
 				},
+                {
+					"component_type": "slogp",
+					"name": "SLogP",
+					"weight": 1,
+					"model_path": null,
+					"smiles": [],
+					"specific_parameters": {
+						"transformation_type": "double_sigmoid",
+						"high": 3,
+						"low": 1,
+						"coef_div": 3,
+						"coef_si": 10,
+						"coef_se": 10,
+						"transformation": true
+					}
+				},
 				{
 					"component_type": "num_rings",
 					"name": "Number of rings",
