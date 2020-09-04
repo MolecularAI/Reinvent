@@ -17,6 +17,7 @@ class ScoringFunctionComponentNameEnum():
     __NUM_HBA_LIPINSKI = "num_hba_lipinski"
     __NUM_RINGS = "num_rings"
     __TPSA = "tpsa"
+    __SLOGP = "slogp"
     __TOTAL_SCORE = "total_score" # there is no actual component corresponding to this type
     __AZ_LOGD74 = "az_logd74"
     __HLM_CLINT = "hlm_clint"
@@ -115,6 +116,14 @@ class ScoringFunctionComponentNameEnum():
 
     @QED_SCORE.setter
     def QED_SCORE(self, value):
+        raise ValueError("Do not assign value to a ScoringFunctionComponentNameEnum field")
+
+    @property
+    def SLOGP(self):
+        return self.__SLOGP
+
+    @SLOGP.setter
+    def SLOGP(self, value):
         raise ValueError("Do not assign value to a ScoringFunctionComponentNameEnum field")
 
     @property
