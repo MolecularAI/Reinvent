@@ -83,13 +83,3 @@ The tests can be executed using `Unittest`:
 ```
 python main_test.py
 ```
-
-Or using Pytest:
-```
-python -m pytest unittest_reinvent
-```
-
-Integration tests are decorated with `@pytest.mark.integration`. You can easily skip integration tests using `pytest` mark expression (`-m` argument):
-```
-python -m pytest -m "not integration" --strict-markers unittest_reinvent/
-```
