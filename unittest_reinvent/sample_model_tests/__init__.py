@@ -1,2 +1,0 @@
-from unittest_reinvent.sample_model_tests.test_sample_from_model import *
-from unittest_reinvent.sample_model_tests.test_sample_logger_tbx import *

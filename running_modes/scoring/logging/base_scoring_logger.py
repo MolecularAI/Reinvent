@@ -3,9 +3,13 @@ import logging
 import os
 from abc import ABC, abstractmethod
 
+import pandas as pd
+from typing import List
+
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.scoring_log_configuration import ScoringLoggerConfiguration
-from scoring.score_summary import FinalSummary
+from running_modes.enums.scoring_runner_enum import ScoringRunnerEnum
+from reinvent_scoring.scoring.score_summary import FinalSummary
 
 
 class BaseScoringLogger(ABC):
@@ -14,6 +18,7 @@ class BaseScoringLogger(ABC):
         self._log_config = ScoringLoggerConfiguration(**self._configuration.logging)
         self._setup_workfolder()
         self._logger = self._setup_logger()
+        self._scoring_runner_enum = ScoringRunnerEnum()
 
     @abstractmethod
     def log_message(self, message: str):
@@ -26,9 +31,41 @@ class BaseScoringLogger(ABC):
         with open(file, 'w') as f:
             f.write(jsonstr)
 
-    @abstractmethod
     def log_results(self, score_summary: FinalSummary):
-        raise NotImplementedError("log_results method is not implemented")
+        output_file = os.path.join(self._log_config.logging_path, "scored_smiles.csv")
+        table_header = self._create_table_header(score_summary)
+        data_list = self._convolute_score_summary(score_summary)
+        dataframe = pd.DataFrame(data_list, columns=table_header, dtype=str)
+        dataframe.to_csv(output_file, header=True, index=False)
+
+    def _convolute_score_summary(self, score_summary: FinalSummary) -> []:
+        smiles = score_summary.scored_smiles
+        scores = score_summary.total_score
+        component_scores = [c.score for c in score_summary.profile]
+        data = []
+
+        for indx in range(len(smiles)):
+            valid = 1 if indx in score_summary.valid_idxs else 0
+            score = scores[indx] if valid else 0
+            row = self._compose_row_entry(indx, valid, score, smiles[indx], component_scores)
+            data.append(row)
+
+        return data
+
+    def _compose_row_entry(self, indx: int, valid: int, score: float, smile: str, component_scores: List) -> List:
+        row = [smile, score]
+        components = [component[indx] for component in component_scores]
+        row.extend(components)
+        row.append(valid)
+        return row
+
+    def _create_table_header(self, score_summary: FinalSummary) -> List:
+        column_names = [self._scoring_runner_enum.SMILES, self._scoring_runner_enum.TOTAL_SCORE]
+        component_names = [c.name for c in score_summary.profile]
+        column_names.extend(component_names)
+        column_names.append(self._scoring_runner_enum.VALID)
+
+        return column_names
 
     def _setup_logger(self):
         handler = logging.StreamHandler()

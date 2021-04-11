@@ -1,12 +1,8 @@
-import json
-import os
-
 import requests
 
-import utils.logging.log as utils_log
+import running_modes.utils.configuration as utils_log
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.scoring.logging.base_scoring_logger import BaseScoringLogger
-from scoring.score_summary import FinalSummary
 
 
 class RemoteScoringLogger(BaseScoringLogger):
@@ -16,17 +12,6 @@ class RemoteScoringLogger(BaseScoringLogger):
 
     def log_message(self, message: str):
         self._logger.info(message)
-
-    def log_out_input_configuration(self):
-        file = os.path.join(self._log_config.logging_path, "input.json")
-        jsonstr = json.dumps(self._configuration, default=lambda x: x.__dict__, sort_keys=True, indent=4,
-                             separators=(',', ': '))
-        with open(file, 'w') as f:
-            f.write(jsonstr)
-
-    def log_results(self, score_summary: FinalSummary):
-        # TODO this should notify the server
-        pass
 
     def _notify_server(self, data, to_address):
         """This is called every time we are posting data to server"""

@@ -4,14 +4,13 @@ import numpy as np
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-import utils.logging.reinforcement_learning as ul_rl
+import reinvent_chemistry.logging as ul_rl
+from diversity_filters.base_diversity_filter import BaseDiversityFilter
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.reinforcement_learning.logging import ConsoleMessage
 from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
-from scoring.score_summary import FinalSummary
-from utils import fraction_valid_smiles
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
-from utils.logging.tensorboard import add_mols
+from reinvent_scoring.scoring.score_summary import FinalSummary
+from reinvent_scoring.scoring.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
 
 
 class LocalReinforcementLogger(BaseReinforcementLogger):
@@ -33,22 +32,22 @@ class LocalReinforcementLogger(BaseReinforcementLogger):
     def timestep_report(self, start_time, n_steps, step, smiles: np.array,
                         mean_score: np.float32, score_summary: FinalSummary, score: np.array,
                         agent_likelihood: torch.tensor, prior_likelihood: torch.tensor,
-                        augmented_likelihood: torch.tensor):
+                        augmented_likelihood: torch.tensor, diversity_filter: BaseDiversityFilter):
         message = self._console_message_formatter.create(start_time, n_steps, step, smiles, mean_score, score_summary,
                                                          score, agent_likelihood, prior_likelihood,
                                                          augmented_likelihood)
         self._logger.info(message)
         self._tensorboard_report(step, smiles, score, score_summary, agent_likelihood, prior_likelihood,
-                                 augmented_likelihood)
+                                 augmented_likelihood, diversity_filter)
 
     def save_final_state(self, agent, scaffold_filter):
         agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
-        scaffold_filter.save_to_csv(self._log_config.resultdir, self._log_config.job_name)
+        self.save_scaffold_memory(scaffold_filter)
         self._summary_writer.close()
         self.log_out_input_configuration()
 
     def _tensorboard_report(self, step, smiles, score, score_summary: FinalSummary, agent_likelihood, prior_likelihood,
-                            augmented_likelihood):
+                            augmented_likelihood, diversity_filter: BaseDiversityFilter):
         self._summary_writer.add_scalars("nll/avg", {
             "prior": prior_likelihood.mean(),
             "augmented": augmented_likelihood.mean(),
@@ -58,8 +57,9 @@ class LocalReinforcementLogger(BaseReinforcementLogger):
         for i, log in enumerate(score_summary.profile):
             self._summary_writer.add_scalar(score_summary.profile[i].name, np.mean(score_summary.profile[i].score),
                                             step)
-        self._summary_writer.add_scalar("average score", mean_score, step)
-        self._summary_writer.add_scalar("Fraction valid SMILES", fraction_valid_smiles(smiles), step)
+        self._summary_writer.add_scalar("Valid SMILES", ul_rl.fraction_valid_smiles(smiles), step)
+        self._summary_writer.add_scalar("Number of SMILES found", diversity_filter.number_of_smiles_in_memory(), step)
+        self._summary_writer.add_scalar("Average score", mean_score, step)
         if step % 10 == 0:
             self._log_out_smiles_sample(smiles, score, step, score_summary)
 
@@ -70,10 +70,10 @@ class LocalReinforcementLogger(BaseReinforcementLogger):
 
         list_of_mols, legends, pattern = self._check_for_invalid_mols_and_create_legends(smiles, score, score_summary)
         try:
-            add_mols(self._summary_writer, "Molecules from epoch", list_of_mols[:self._sample_size], self._rows,
+            ul_rl.add_mols(self._summary_writer, "Molecules from epoch", list_of_mols[:self._sample_size], self._rows,
                      [x for x in legends], global_step=step, size_per_mol=(320, 320), pattern=pattern)
-        except Exception as ex:
-            print(f"Error in RDKit has occurred, skipping printout for step {step}.")
+        except:
+            self.log_message(f"Error in RDKit has occurred, skipping report for step {step}.")
 
     def _check_for_invalid_mols_and_create_legends(self, smiles, score, score_summary: FinalSummary):
         smiles = ul_rl.padding_with_invalid_smiles(smiles, self._sample_size)

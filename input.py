@@ -4,10 +4,10 @@
 import sys
 import json
 from running_modes.manager import Manager
-# this import is needed for unpickling the models
-from model_container import ModelContainer
 
-def main():
+
+if __name__ == "__main__":
+
     with open(sys.argv[1]) as f:
         json_input = f.read().replace('\r', '').replace('\n', '')
 
@@ -19,7 +19,3 @@ def main():
     else:
         manager = Manager(configuration)
         manager.run()
-
-
-if __name__ == "__main__":
-    main()

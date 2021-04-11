@@ -1,5 +1,17 @@
 {
-  "USER_NAME": "reinvent_user",
-  "MAIN_TEST_PATH": "/location/where/unit/tests/will/be/executed",
-  "DEVELOPMENT_ENVIRONMENT": true
+  "USER_NAME": "<your username>",
+  "MAIN_TEST_PATH": "<provide writing path for your unit/integration tests>",
+  "DEVELOPMENT_ENVIRONMENT": true,
+  "COMPONENT_SPECIFIC":
+  {
+    "AZDOCK": {
+      "AZDOCK_DOCKER_SCRIPT_PATH": "/<your_path>/docker.py",
+      "AZDOCK_ENV_PATH": "/<your_path>/miniconda3/envs/AZdock/bin/python",
+      "AZDOCK_DEBUG": true
+    }
+  },
+  "ENVIRONMENTAL_VARIABLES": {
+    "PIP_URL": "<that`s confidential>",
+    "PIP_KEY": "<that`s confidential>"
+  }
 }

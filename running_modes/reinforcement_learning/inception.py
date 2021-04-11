@@ -1,18 +1,22 @@
+import numpy as np
 import pandas as pd
+from typing import Tuple, List
 
 from running_modes.configurations.reinforcement_learning.inception_configuration import InceptionConfiguration
-from utils.smiles import convert_to_rdkit_smiles
+from reinvent_chemistry.conversions import Conversions
 
 
 class Inception:
     def __init__(self, configuration: InceptionConfiguration, scoring_function, prior):
         self.configuration = configuration
-        self._initialize_memory(scoring_function, prior)
-
-    def _initialize_memory(self, scoring_function, prior):
+        self._chemistry = Conversions()
         self.memory: pd.DataFrame = pd.DataFrame(columns=['smiles', 'score', 'likelihood'])
-        if len(self.configuration.smiles):
-            standardized_and_nulls = [convert_to_rdkit_smiles(smile) for smile in self.configuration.smiles]
+        self._load_to_memory(scoring_function, prior, self.configuration.smiles)
+
+
+    def _load_to_memory(self, scoring_function, prior, smiles):
+        if len(smiles):
+            standardized_and_nulls = [self._chemistry.convert_to_rdkit_smiles(smile) for smile in smiles]
             standardized = [smile for smile in standardized_and_nulls if smile is not None]
             self.evaluate_and_add(standardized, scoring_function, prior)
 
@@ -35,7 +39,7 @@ class Inception:
         self.memory = self.memory.append(df)
         self._purge_memory()
 
-    def sample(self):
+    def sample(self) -> Tuple[List[str], np.array, np.array]:
         sample_size = min(len(self.memory), self.configuration.sample_size)
         if sample_size > 0:
             sampled = self.memory.sample(sample_size)
@@ -43,8 +47,6 @@ class Inception:
             scores = sampled["score"].values
             prior_likelihood = sampled["likelihood"].values
             return smiles, scores, prior_likelihood
-        return [], [], [] #TODO: think of better return types
+        return [], [], []
 
-    def log_out_memory(self, path):
-        self.memory.to_csv(path)
-        # self.logger.log_out_experience(path, self.memory)
+

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 #  coding=utf-8
+from reinvent_chemistry.file_reader import FileReader
 
 import models.model as reinvent
 import models.vocabulary as voc
+from running_modes.configurations.create_model.create_model_configuration import CreateModelConfiguration
+from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.create_model_log_configuration import CreateModelLoggerConfiguration
 from running_modes.create_model.logging.create_model_logger import CreateModelLogger
 from running_modes.create_model.logging.remote_create_model_logger import RemoteCreateModelLogger
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.create_model.create_model_configuration import CreateModelConfiguration
-import utils.smiles as chem_smiles
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class CreateModelRunner:
@@ -18,7 +18,8 @@ class CreateModelRunner:
         """
         Creates a CreateModelRunner.
         """
-        self._smiles_list = chem_smiles.read_smiles_file(configuration.input_smiles_path, standardize=configuration.standardize)
+        self._reader = FileReader([], None)
+        self._smiles_list = self._reader.read_delimited_file(configuration.input_smiles_path, standardize=configuration.standardize)
         self._output_model_path = configuration.output_model_path
 
         self._num_layers = configuration.num_layers

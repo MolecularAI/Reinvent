@@ -1,11 +1,10 @@
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
 
-import utils as utils_general
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.sampling_log_configuration import SamplingLoggerConfiguration
 from running_modes.sampling.logging.base_sampling_logger import BaseSamplingLogger
-from utils.logging.tensorboard import add_mols
+from reinvent_chemistry.logging import add_mols, fraction_valid_smiles
 
 
 class LocalSamplingLogger(BaseSamplingLogger):
@@ -23,10 +22,10 @@ class LocalSamplingLogger(BaseSamplingLogger):
         self._summary_writer.close()
 
     def _log_timestep(self, smiles: np.array, likelihoods: np.array):
-        fraction_valid_smiles = utils_general.fraction_valid_smiles(smiles)
+        valid_smiles_fraction = fraction_valid_smiles(smiles)
         fraction_unique_entries = self._get_unique_entires_fraction(likelihoods)
         self._visualize_structures(smiles)
-        self._summary_writer.add_text('Data', f'Valid SMILES: {fraction_valid_smiles}% '
+        self._summary_writer.add_text('Data', f'Valid SMILES: {valid_smiles_fraction}% '
                                               f'Unique Mols: {fraction_unique_entries}%  ')
 
     def _visualize_structures(self, smiles):

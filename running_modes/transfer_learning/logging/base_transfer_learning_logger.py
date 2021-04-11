@@ -27,7 +27,7 @@ class BaseTransferLearningLogger(ABC):
 
     @abstractmethod
     def log_timestep(self, lr, epoch, sampled_smiles, sampled_nlls,
-                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model):
+                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model, model_path):
         raise NotImplementedError("log_timestep method is not implemented")
 
     def log_out_input_configuration(self):
@@ -51,7 +51,7 @@ class BaseTransferLearningLogger(ABC):
         logger.propagate = False
         return logger
 
-    def _count_unique_inchi_keys(self, smiles) -> Tuple[List, List]:
+    def _count_compound_frequency(self, smiles) -> Tuple[List, List]:
         """returns key value pair where value is [count, mol]"""
         inchi_dict = {}
         for smile in smiles:

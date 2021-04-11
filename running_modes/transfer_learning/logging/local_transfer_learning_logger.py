@@ -6,8 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
-from utils import fraction_valid_smiles
-from utils.logging.tensorboard import add_mols
+from reinvent_chemistry.logging import fraction_valid_smiles, add_mols
 
 
 class LocalTransferLearningLogger(BaseTransferLearningLogger):
@@ -28,7 +27,7 @@ class LocalTransferLearningLogger(BaseTransferLearningLogger):
             f.write(jsonstr)
 
     def log_timestep(self, lr, epoch, sampled_smiles, sampled_nlls,
-                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model):
+                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model, model_path):
         self.log_message(f"Collecting data for epoch {epoch}")
 
         if self._with_weights:
@@ -88,7 +87,7 @@ class LocalTransferLearningLogger(BaseTransferLearningLogger):
         self._summary_writer.add_scalar("nll_plot/jsd_joined", jsd_joined_data, epoch)
 
     def _visualize_structures(self, smiles: List[str], epoch: int):
-        list_of_labels, list_of_mols = self._count_unique_inchi_keys(smiles)
+        list_of_labels, list_of_mols = self._count_compound_frequency(smiles)
         if len(list_of_mols) > 0:
             add_mols(self._summary_writer, "Most Frequent Molecules", list_of_mols, self._rows, list_of_labels,
                      global_step=epoch)

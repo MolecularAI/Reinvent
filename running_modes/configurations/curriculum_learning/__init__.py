@@ -1,0 +1,2 @@
+from running_modes.configurations.curriculum_learning.curriculum_learning_components import CurriculumLearningComponents
+from running_modes.configurations.curriculum_learning.curriculum_learning_configuration import CurriculumLearningConfiguration

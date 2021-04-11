@@ -4,7 +4,6 @@ package.json
 .vscode
 tags
 .idea
-
 /configs/config.json
 
 # Coverage.py output
@@ -13,3 +12,4 @@ htmlcov/
 
 # Python memory_profiler output
 mprofile_*.dat
+azdock_run.log

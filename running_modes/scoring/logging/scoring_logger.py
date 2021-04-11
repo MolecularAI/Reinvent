@@ -2,7 +2,7 @@ from running_modes.configurations.general_configuration_envelope import GeneralC
 from running_modes.configurations.logging.scoring_log_configuration import ScoringLoggerConfiguration
 from running_modes.scoring.logging.local_scoring_logger import LocalScoringLogger
 from running_modes.scoring.logging.remote_scoring_logger import RemoteScoringLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class ScoringLogger:
