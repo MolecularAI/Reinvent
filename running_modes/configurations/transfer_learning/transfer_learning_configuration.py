@@ -1,8 +1,8 @@
-class TransferLearningConfiguration():
+class TransferLearningConfiguration:
     def __init__(self, input_model_path, output_model_path, input_smiles_path, save_every_n_epochs=1, batch_size=128,
                  clip_gradient_norm=1., num_epochs=10, starting_epoch=1, shuffle_each_epoch=True,
                  collect_stats_frequency=1, adaptive_lr_config=None, validation_smiles_path=None,
-                 standardize=True, randomize=False):
+                 standardize=True, randomize=False, standardization_filters=None, validate_model_vocabulary=False):
         self.input_model_path = input_model_path
         self.output_model_path = output_model_path
         self.input_smiles_path = input_smiles_path
@@ -17,3 +17,5 @@ class TransferLearningConfiguration():
         self.validation_smiles_path = validation_smiles_path
         self.standardize = standardize
         self.randomize = randomize
+        self.standardization_filters = standardization_filters
+        self.validate_model_vocabulary = validate_model_vocabulary

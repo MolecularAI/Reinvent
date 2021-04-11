@@ -4,14 +4,14 @@ import numpy as np
 import requests
 import torch
 
-import utils.logging.log as ull
-import utils.logging.reinforcement_learning as ul_rl
+import running_modes.utils.configuration as ull
+import running_modes.utils.general
+import reinvent_chemistry.logging as ul_rl
+from diversity_filters.base_diversity_filter import BaseDiversityFilter
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
-from scoring.score_summary import FinalSummary
-from utils import fraction_valid_smiles
-from utils.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
-from utils.logging.visualization import mol_to_png_string
+from reinvent_scoring.scoring.score_summary import FinalSummary
+from reinvent_scoring.scoring.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
 
 
 class RemoteReinforcementLogger(BaseReinforcementLogger):
@@ -29,20 +29,20 @@ class RemoteReinforcementLogger(BaseReinforcementLogger):
     def timestep_report(self, start_time, n_steps, step, smiles,
                         mean_score: np.array, score_summary: FinalSummary, score,
                         agent_likelihood: torch.tensor, prior_likelihood: torch.tensor,
-                        augmented_likelihood: torch.tensor):
-        score_components = self._score_summary_breakdown(score_summary, mean_score)
+                        augmented_likelihood: torch.tensor, diversity_filter: BaseDiversityFilter):
+        score_components = self._score_summary_breakdown(score_summary, mean_score, diversity_filter)
         learning_curves = self._learning_curve_profile(agent_likelihood, prior_likelihood, augmented_likelihood)
         structures_table = self._visualize_structures(smiles, score, score_summary)
         smiles_report = self._create_sample_report(smiles, score, score_summary)
 
-        time_estimation = ul_rl.estimate_run_time(start_time, n_steps, step)
+        time_estimation = running_modes.utils.general.estimate_run_time(start_time, n_steps, step)
         data = self._assemble_timestep_report(step, score_components, structures_table, learning_curves,
-                                              time_estimation, fraction_valid_smiles(smiles), smiles_report)
+                                              time_estimation, ul_rl.fraction_valid_smiles(smiles), smiles_report)
         self._notify_server(data, self._log_config.recipient)
 
     def save_final_state(self, agent, scaffold_filter):
         agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
-        scaffold_filter.save_to_csv(self._log_config.resultdir, self._log_config.job_name)
+        self.save_scaffold_memory(scaffold_filter)
         self.log_out_input_configuration()
 
     def _notify_server(self, data, to_address):
@@ -80,7 +80,7 @@ class RemoteReinforcementLogger(BaseReinforcementLogger):
         list_of_mols, legend = ul_rl.check_for_invalid_mols_and_create_legend(smiles, score, self._sample_size)
         smarts_pattern = self._get_matching_substructure_from_config(score_summary)
         pattern = ul_rl.find_matching_pattern_in_smiles(list_of_mols=list_of_mols, smarts_pattern=smarts_pattern)
-        mol_in_base64_string = mol_to_png_string(list_of_mols, molsPerRow=self._columns, subImgSize=(300, 300),
+        mol_in_base64_string = ul_rl.mol_to_png_string(list_of_mols, molsPerRow=self._columns, subImgSize=(300, 300),
                                                  legend=legend, matches=pattern)
         return mol_in_base64_string
 
@@ -106,12 +106,14 @@ class RemoteReinforcementLogger(BaseReinforcementLogger):
         }
         return learning_curves
 
-    def _score_summary_breakdown(self, score_summary: FinalSummary, mean_score: np.array):
+    def _score_summary_breakdown(self, score_summary: FinalSummary, mean_score: np.array,
+                                 diversity_filter: BaseDiversityFilter):
         score_components = {}
         for i, log in enumerate(score_summary.profile):
             score_components[f"{score_summary.profile[i].component_type}:{score_summary.profile[i].name}"] = \
                 float(np.mean(score_summary.profile[i].score))
         score_components["total_score:total_score"] = float(mean_score)
+        score_components["collected smiles in memory"] = diversity_filter.number_of_smiles_in_memory()
         return score_components
 
     def _assemble_timestep_report(self, step, score_components, structures_table, learning_curves, time_estimation,
@@ -119,7 +121,7 @@ class RemoteReinforcementLogger(BaseReinforcementLogger):
         actual_step = step + 1
         timestep_report = {"step": actual_step,
                            "components": score_components,
-                           "structures": structures_table,
+                           # "structures": structures_table,
                            "learning": learning_curves,
                            "time_estimation": time_estimation,
                            "fraction_valid_smiles": fraction_valid_smiles,

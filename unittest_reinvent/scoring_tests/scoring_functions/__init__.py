@@ -1,6 +1,0 @@
-from unittest_reinvent.scoring_tests.scoring_functions.test_custom_sum import *
-from unittest_reinvent.scoring_tests.scoring_functions.test_product import *
-from unittest_reinvent.scoring_tests.scoring_functions.test_score_transformations import *
-from unittest_reinvent.scoring_tests.scoring_functions.test_scoring_function_factory import *
-from unittest_reinvent.scoring_tests.scoring_functions.test_selectivity_multiplicative import *
-from unittest_reinvent.scoring_tests.scoring_functions.test_selectivity_multiplicative_double_sigmoid import *

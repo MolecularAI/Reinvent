@@ -1,1 +1,0 @@
-from unittest_reinvent.scoring_tests.fixtures.predictive_model_fixtures import *

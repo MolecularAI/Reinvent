@@ -16,7 +16,7 @@ class RemoteCreateModelLogger:
 
     def log_message(self, message: str):
         data = {"Message": message}
-        # TODO: logging endpoint should be scpecified in a separate configuration file
+        # TODO: utils endpoint should be scpecified in a separate configuration file
         self._notify_server(data, f"{self._log_config.recipient}/jobLog/log-id/{self._log_config.job_id}")
 
     def _notify_server(self, data, to_address):

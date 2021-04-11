@@ -1,28 +1,30 @@
 import numpy as np
 import scipy.stats as sps
 import torch
+from reinvent_chemistry.file_reader import FileReader
 
 import models.dataset as md
 import models.model as mm
-import utils.smiles as chem_smiles
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.transfer_learning.adaptive_learning_rate_configuration import \
     AdaptiveLearningRateConfiguration
-from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
-from utils.enums.adaptive_learning_rate_enum import AdaptiveLearningRateEnum
+from running_modes.enums.adaptive_learning_rate_enum import AdaptiveLearningRateEnum
+from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
+
 
 
 class AdaptiveLearningRate:
-    def __init__(self, model: mm.Model, main_config: GeneralConfigurationEnvelope,
-                 configuration: AdaptiveLearningRateConfiguration):
+    def __init__(self, model: mm.Model, logger: BaseTransferLearningLogger,
+                 configuration: AdaptiveLearningRateConfiguration, reader: FileReader, standardize: bool):
         self._adaptive_learning_rate_enum = AdaptiveLearningRateEnum()
         self._config = configuration
         self._optimizer = torch.optim.Adam(model.network.parameters(), lr=self._config.start)
         self._learning_rate_restarted_times = 0
-        self._logger = TransferLearningLogger(main_config)
+        self._logger = logger
         self._lr_scheduler = self._initialize_lr_scheduler()
         self._lr_adaptative_metric = []
         self._data = {}
+        self._reader = reader
+        self._standardize = standardize
 
     def _initialize_lr_scheduler(self):
         if self._config.mode == self._adaptive_learning_rate_enum.EXPONENTIAL:
@@ -90,20 +92,17 @@ class AdaptiveLearningRate:
                                   sampled_nlls=sampled_nlls, validation_nlls=validation_nlls,
                                   training_nlls=training_nlls,
                                   jsd_data=self.get_jsd_data(),
-                                  jsd_joined_data=self.get_jsd_joined_data(), model=model)
+                                  jsd_joined_data=self.get_jsd_joined_data(), model=model, model_path=model_path)
         self._lr_adaptative_metric.append(self.get_jsd_joined_data())
-
-    def _smiles_to_mols(self, smiles):
-        smiles_and_mols = [(smi, chem_smiles.to_mol(smi)) for smi in smiles]
-        return smiles_and_mols
 
     def _sample_smiles_and_calculate_loss(self, model, sample_size):
         sampled_smis, sampled_nlls = model.sample_smiles(num=sample_size)
         return sampled_smis, sampled_nlls
 
     def _calc_nlls(self, model, path, sample_size):
+        smiles = list(self._reader.read_delimited_file(path, num=sample_size, standardize=self._standardize))
         return np.concatenate(
-            list(md.calculate_nlls_from_model(model, chem_smiles.read_smiles_file(path, num=sample_size))[0]))
+            list(md.calculate_nlls_from_model(model, smiles)[0]))
 
     def _update_nll_with_validation(self, sampled_nlls, validation_nlls, training_nlls):
         def jsd(dists):
@@ -148,3 +147,6 @@ class AdaptiveLearningRate:
 
     def log_out_inputs(self):
         self._logger.log_out_input_configuration()
+
+    def log_message(self, message: str):
+        self._logger.log_message(message)

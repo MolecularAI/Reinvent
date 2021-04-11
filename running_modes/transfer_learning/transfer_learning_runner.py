@@ -1,14 +1,20 @@
+from typing import List
+
 import rdkit
 import torch
 import torch.nn.utils as tnnu
 import tqdm
+from reinvent_chemistry.enums import FilterTypesEnum
+from reinvent_chemistry.file_reader import FileReader
+from reinvent_chemistry.standardization.filter_configuration import FilterConfiguration
 
 import models.dataset as reinvent_dataset
 import models.vocabulary as reinvent_vocabulary
-import utils.smiles as chem_smiles
 from models.model import Model
+from running_modes.configurations import AdaptiveLearningRateConfiguration
 from running_modes.configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
 from running_modes.transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
+from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
 
 rdkit.rdBase.DisableLog("rdApp.error")
 
@@ -16,10 +22,14 @@ rdkit.rdBase.DisableLog("rdApp.error")
 class TransferLearningRunner:
     """Trains a given model."""
 
-    def __init__(self, model: Model, config: TransferLearningConfiguration, adaptive_learning_rate: AdaptiveLearningRate):
+    def __init__(self, model: Model, config: TransferLearningConfiguration, general_config):
         self._model = model
-        self._adaptive_learning_rate = adaptive_learning_rate
         self._config = config
+        self._logger = TransferLearningLogger(general_config)
+        self._config.standardization_filters = self._set_standardization_filters(self._config.standardization_filters)
+        self._reader = FileReader(self._config.standardization_filters, self._logger)
+        adaptive_lr_config = AdaptiveLearningRateConfiguration(**self._config.adaptive_lr_config)
+        self._adaptive_learning_rate = AdaptiveLearningRate(model, self._logger, adaptive_lr_config, self._reader, self._config.standardize)
 
     def run(self):
         last_epoch = self._config.starting_epoch + self._config.num_epochs - 1
@@ -53,9 +63,13 @@ class TransferLearningRunner:
         return tqdm.tqdm(iterable=iterable, total=total, ascii=True, **kwargs)
 
     def _initialize_dataloader(self, path):
-        training_set = chem_smiles.read_smiles_file(path, standardize=self._config.standardize, randomize=self._config.randomize)
+        training_set = self._reader.read_delimited_file(path, standardize=self._config.standardize,
+                                                        randomize=self._config.randomize)
         dataset = reinvent_dataset.Dataset(smiles_list=training_set, vocabulary=self._model.vocabulary,
                                            tokenizer=reinvent_vocabulary.SMILESTokenizer())
+        if len(dataset) == 0:
+            raise IOError(f"No valid entries are present in the supplied file: {path}")
+
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=self._config.batch_size,
                                                  shuffle=self._config.shuffle_each_epoch,
                                                  collate_fn=reinvent_dataset.Dataset.collate_fn)
@@ -78,3 +92,17 @@ class TransferLearningRunner:
             self._adaptive_learning_rate.collect_stats(epoch, model_path, self._config.input_smiles_path,
                                                        validation_set_path=self._config.validation_smiles_path)
         self._adaptive_learning_rate.update_lr_scheduler(epoch)
+
+    def _set_standardization_filters(self, standardization_filters: dict) -> List[FilterConfiguration]:
+        if standardization_filters:
+            filter_configs = [FilterConfiguration(**filters) for filters in standardization_filters]
+
+            if self._config.validate_model_vocabulary:
+                tokens = self._model.vocabulary.tokens()
+                filter_types = FilterTypesEnum()
+                config = FilterConfiguration(name=filter_types.VOCABULARY_FILTER, parameters={"vocabulary": tokens})
+                filter_configs.append(config)
+
+            return filter_configs
+        else:
+            return []

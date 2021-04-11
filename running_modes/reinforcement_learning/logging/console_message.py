@@ -1,7 +1,7 @@
 import time
 
-from scoring.score_summary import FinalSummary
-from utils import fraction_valid_smiles
+from reinvent_scoring.scoring.score_summary import FinalSummary
+from reinvent_chemistry.logging import fraction_valid_smiles
 
 
 class ConsoleMessage:

@@ -3,7 +3,7 @@ from running_modes.configurations.logging.reinforcement_log_configuration import
 from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
 from running_modes.reinforcement_learning.logging import LocalReinforcementLogger
 from running_modes.reinforcement_learning.logging.remote_reinforcement_logger import RemoteReinforcementLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class ReinforcementLogger:

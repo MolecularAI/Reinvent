@@ -1,7 +1,7 @@
 from running_modes.configurations import GeneralConfigurationEnvelope, BaseLoggerConfiguration
 from running_modes.validation.logging.local_validation_logger import LocalValidationLogger
 from running_modes.validation.logging.remote_validation_logger import RemoteValidationLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class ValidationLogger:

@@ -3,7 +3,7 @@ from running_modes.configurations.logging.sampling_log_configuration import Samp
 from running_modes.sampling.logging.base_sampling_logger import BaseSamplingLogger
 from running_modes.sampling.logging.local_sampling_logger import LocalSamplingLogger
 from running_modes.sampling.logging.remote_sampling_logger import RemoteSamplingLogger
-from utils.enums.logging_mode_enum import LoggingModeEnum
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class SamplingLogger:

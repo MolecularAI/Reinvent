@@ -1,11 +1,11 @@
 import numpy as np
 import requests
+from reinvent_chemistry.conversions import Conversions
 
-import utils.logging.log as utils_log
-import utils as utils_general
+import running_modes.utils.configuration as utils_log
+from reinvent_chemistry.logging import fraction_valid_smiles
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
-from utils.logging.visualization import mol_to_png_string
 
 
 class RemoteTransferLearningLogger(BaseTransferLearningLogger):
@@ -13,6 +13,7 @@ class RemoteTransferLearningLogger(BaseTransferLearningLogger):
     def __init__(self, configuration: GeneralConfigurationEnvelope):
         super().__init__(configuration)
         self._is_dev = utils_log._is_development_environment()
+        self._conversions = Conversions()
 
     def log_message(self, message: str):
         self._logger.info(message)
@@ -38,22 +39,27 @@ class RemoteTransferLearningLogger(BaseTransferLearningLogger):
             self._logger.exception(data, exc_info=False)
 
     def log_timestep(self, lr, epoch, sampled_smiles, sampled_nlls,
-                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model):
+                     validation_nlls, training_nlls, jsd_data, jsd_joined_data, model, model_path):
 
         learning_mean = self._mean_learning_curve_profile(sampled_nlls, training_nlls)
         learning_variation = self._variation_learning_curve_profile(sampled_nlls, training_nlls)
-        fraction_valid_smiles = utils_general.fraction_valid_smiles(sampled_smiles)
-        structures_table = self._visualize_structures(sampled_smiles)
-        data = self._assemble_timestep_report(epoch, fraction_valid_smiles, structures_table, learning_mean,
-                                              learning_variation, sampled_nlls, training_nlls)
+        valid_smiles_fraction = fraction_valid_smiles(sampled_smiles)
+        smiles_report = self._create_sample_report(sampled_smiles)
+
+        data = self._assemble_timestep_report(epoch, valid_smiles_fraction, learning_mean,
+                                              learning_variation, sampled_nlls, training_nlls, smiles_report,
+                                              model_path)
         self._notify_server(data, self._log_config.recipient)
 
-    def _visualize_structures(self, smiles):
+    def _create_sample_report(self, smiles):
+        legend, list_of_mols = self._count_compound_frequency(smiles)
+        list_of_smiles = [self._conversions.mol_to_smiles(mol) if mol is not None else "INVALID" for mol in list_of_mols]
 
-        list_of_labels, list_of_mols = self._count_unique_inchi_keys(smiles)
-        mol_in_base64_string = mol_to_png_string(list_of_mols, molsPerRow=self._columns, subImgSize=(300, 300),
-                                                 legend=list_of_labels)
-        return mol_in_base64_string
+        report = {
+            "smiles": list_of_smiles,
+            "legend": legend
+        }
+        return report
 
     def _mean_learning_curve_profile(self, sampled_nlls: np.array, training_nlls: np.array):
         learning_curves = {
@@ -69,14 +75,16 @@ class RemoteTransferLearningLogger(BaseTransferLearningLogger):
         }
         return learning_curves
 
-    def _assemble_timestep_report(self, epoch, fraction_valid_smiles, structures_table, learning_mean,
-                                  learning_variation, sampled_nlls, training_nlls) -> dict:
+    def _assemble_timestep_report(self, epoch, fraction_valid_smiles, learning_mean,
+                                  learning_variation, sampled_nlls, training_nlls, smiles_report,
+                                  model_path) -> dict:
         timestep_report = {"epoch": epoch,
                            "fraction_valid_smiles": {"valid": fraction_valid_smiles},
                            "sampled_smiles_distribution": {"negative_log_likelihood": sampled_nlls.tolist()},
                            "training_smiles_distribution": {"negative_log_likelihood": training_nlls.tolist()},
-                           "structures": structures_table,
                            "learning_mean": learning_mean,
-                           "learning_variation": learning_variation
+                           "learning_variation": learning_variation,
+                           "smiles_report": smiles_report,
+                           "model_path": model_path
                            }
         return timestep_report
