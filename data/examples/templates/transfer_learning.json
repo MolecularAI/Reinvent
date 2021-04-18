@@ -13,6 +13,8 @@
     "shuffle_each_epoch": 1,
     "collect_stats_frequency": 1,
     "standardize": true,
+	"standardization_filters": [{"name": "default", "parameters": {"remove_long_side_chains": false}}],
+    "validate_model_vocabulary": true,
     "randomize": true,
     "adaptive_lr_config": {
       "mode": "constant",
