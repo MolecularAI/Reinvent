@@ -251,7 +251,7 @@
 		},
 		"diversity_filter": {
 			"name": "NoFilter",
-			"nbmax": 25,
+			"bucket_size": 25,
 			"minscore": 0.4,
 			"minsimilarity": 0.4
 		},
