@@ -3,8 +3,8 @@ import scipy.stats as sps
 import torch
 from reinvent_chemistry.file_reader import FileReader
 
-import models.dataset as md
-import models.model as mm
+import reinvent_models.reinvent_core.models.dataset as md
+import reinvent_models.reinvent_core.models.model as mm
 from running_modes.configurations.transfer_learning.adaptive_learning_rate_configuration import \
     AdaptiveLearningRateConfiguration
 from running_modes.enums.adaptive_learning_rate_enum import AdaptiveLearningRateEnum

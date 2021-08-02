@@ -1,0 +1,2 @@
+from unittest_reinvent.running_modes.lib_invent_tests.scoring_strategy_tests.test_standard_scoring_strategy_no_reaction_filter \
+    import TestStandardScoringStrategyNoReactionFilter

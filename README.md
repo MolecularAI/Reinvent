@@ -1,65 +1,81 @@
-REINVENT 3.0 - beta
-=======================================================================================
+REINVENT 3.0
+=================================================================================================================
 
-NOTE
+
+Installation
+-------------
+
+1. Install [Conda](https://conda.io/projects/conda/en/latest/index.html)
+2. Clone this Git repository
+3. Open a shell, and go to the repository and create the Conda environment:
+   
+        $ conda env create -f reinvent.yml
+
+4. Activate the environment:
+   
+        $ conda activate reinvent.v3.0
+
+5. Use the tool.
+
+     
+
+Tutorials / `jupyter` notebooks
 -----
-The code is still undergoing changes and the provided input examples might not be up-to date yet.
-We will try to get this up to date as soon as we can. 
+There is another repository containing useful `jupyter` notebooks related to `REINVENT` 
+called [ReinventCommunity](https://github.com/MolecularAI/ReinventCommunity). Note, that it uses a
+different `conda` environment to execute, so you have to set up a separate environment.
 
-
-__In the meantime, when in doubt, ask!__
 
 Usage
 -----
 
-1. Sample inputs are provided in reinvent/configs/sample_inputs folder.
+For concrete examples, you can check out the Jupyter notebook examples in the ReinventCommunity repo.
+Running each example will result in a template file.There are templates for many running modes. 
+Each running mode can be executed by `python input.py some_running_mode.json` after activating the environment.
+    
+   Templates can be manually edited before using. The only thing that needs modification for a standard run are the file 
+   and folder paths. Most running modes produce logs that can be monitored by `tensorboard`.
 
-2. (Recommended) Use jupyter notebooks in `Reinvent Community` repo to generate inputs.
 
--------------------------------------------------
-To use Tensorboard for logging:
-
-   1. To launch Tensorboard, write:
-       tensorboard --logdir "path to your log output directory" --port=8008.
-       This will give you an address to copy to a browser and access to the graphical summaries from Tensorboard.
-
-   2. Further commands to Tensorboard to change the amount of scalars,histograms, images, distributions and graphs shown
-        can be done as follows:
-        --samples_per_plugin=scalar=700, images=20
-
-Installation
+Tests 
 -----
+The REINVENT project uses the `unittest` framework for its tests; before you run them you first have to create a 
+configuration, which the tests will use.
 
-1. Install Anaconda / Miniconda
-2. Clone the repository
-3. (Optional) Checkout the appropriate branch of the repository and create a new local branch tied to the remote one, e.g.:
-    git checkout --track origin/reinvent.3.0
-4. Open terminal, go to the repository and generate the appropriate environment:
-    conda env create -f reinvent_shared.yml
-   Hint: Use the appropriate `conda` binary. You might want to check, whether you succeeded:
-    conda info --envs
-5. Since there are components that use OpenEye libraries, if you intend to use them you will need to set the environmental variable OE_LICENSE to activate the oechem license. One way to do this and keep it conda environment specific is:
-   On the command line, first:
+In the project directory, create a `config.json` file in the `configs/` directory; you can use the example 
+config (`example.config.json`) as a base.  Make sure that you set `MAIN_TEST_PATH` to a non-existent directory; it
+is where temporary files will be written during the tests; if it is set to an existing directory, that directory 
+will be removed once the tests have finished.
 
-       cd $CONDA_PREFIX
-       mkdir -p ./etc/conda/activate.d
-       mkdir -p ./etc/conda/deactivate.d
-       touch ./etc/conda/activate.d/env_vars.sh
-       touch ./etc/conda/deactivate.d/env_vars.sh
+Some tests require a proprietary OpenEye license; you have to set up a few things to make the tests read your
+license.  The simple way is to just set the `OE_LICENSE` environment variable to the path of the file containing the
+license.  If you just want to set the license in the `reinvent_scoring` Conda environment, it is a bit more complicated,
+but you only have to do it once.
 
-   then edit ./etc/conda/activate.d/env_vars.sh as follows:
+```
+(reinvent-scoring) $ cd $CONDA_PREFIX
+$ mkdir -p etc/conda/activate.d
+$ mkdir -p etc/conda/deactivate.d
+```
 
-       #!/bin/sh
-       export OE_LICENSE='<path to OpenEye license file>'
+Put the following in `etc/conda/activate.d/env_vars.sh`.
 
-   and finally, edit ./etc/conda/deactivate.d/env_vars.sh :
+```
+#!/bin/sh
+export OE_LICENSE='</path/to/your/oe_license/file>'
+```
 
-       #!/bin/sh
-       unset OE_LICENSE
-6. Activate environment (or set it in your GUI)
-7. In the project directory, in ./configs/ create the file `config.json` by copying over `example.config.json` and editing as required
+And put the following in `etc/conda/deactivate.d/env_vars.sh`.
 
+```
+#!/bin/sh
+unset OE_LICENSE
+```
 
-Tests
------
-Currently all tests are excluded form this repository.
+Once you have created the files, deactivate and re-activate the environment, and `echo $OE_LICENSE` should output the
+path to the license file.
+Once you have a configuration and your license can be read, you can run the tests.
+
+```
+$ python main_test.py
+```

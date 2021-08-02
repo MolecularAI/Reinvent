@@ -1,5 +1,5 @@
 
-
+# TODO: Remove this and use DiversityFilterEnum from reinvent_scoring.scoring.enums.diversity_filter_enum
 class ScaffoldFilterEnum():
     IDENTICAL_TOPOLOGICAL_SCAFFOLD = "IdenticalTopologicalScaffold"
     IDENTICAL_MURCKO_SCAFFOLD = "IdenticalMurckoScaffold"

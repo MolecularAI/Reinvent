@@ -1,6 +1,6 @@
 {
-  "USER_NAME": "<your username>",
-  "MAIN_TEST_PATH": "<provide writing path for your unit/integration tests>",
+  "USER_NAME": "your name",
+  "MAIN_TEST_PATH": "/path/to/a/test/folder",
   "DEVELOPMENT_ENVIRONMENT": true,
   "COMPONENT_SPECIFIC":
   {
@@ -8,10 +8,25 @@
       "AZDOCK_DOCKER_SCRIPT_PATH": "/<your_path>/docker.py",
       "AZDOCK_ENV_PATH": "/<your_path>/miniconda3/envs/AZdock/bin/python",
       "AZDOCK_DEBUG": true
+    },
+    "DOCKSTREAM": {
+      "DOCKSTREAM_DOCKER_SCRIPT_PATH": "/<your_path>/docker.py",
+      "DOCKSTREAM_ENV_PATH": "/<your_path>/miniconda3/envs/DockStream/bin/python",
+      "DOCKSTREAM_DEBUG": true
+    },
+    "AZGARD": {
+      "AZGARD_EXECUTOR_SCRIPT_PATH": "/<your_path>/executor.py",
+      "AZGARD_ENV_PATH": "/<your_path>/miniconda3/envs/AZgard/bin/python",
+      "AZGARD_DEBUG": true
     }
   },
   "ENVIRONMENTAL_VARIABLES": {
     "PIP_URL": "<that`s confidential>",
     "PIP_KEY": "<that`s confidential>"
-  }
+  },
+  "ACTIVITY_REGRESSION": "",
+  "ACTIVITY_CLASSIFICATION": "",
+  "SMILES_SET_PATH": "",
+  "PRIOR_PATH": "",
+  "LIBINVENT_PRIOR_PATH": ""
 }

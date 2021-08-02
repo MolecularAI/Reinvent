@@ -7,6 +7,8 @@ class RunningModeEnum:
     VALIDATION = "validation"
     SCORING = "scoring"
     CURRICULUM_LEARNING = "curriculum_learning"
+    LIB_INVENT_REINFORCEMENT_LEARNING = "lib_invent_reinforcement_learning"
+    AUTOMATED_CURRICULUM_LEARNING = "automated_curriculum_learning"
 
     # try to find the internal value and return
     def __getattr__(self, name):

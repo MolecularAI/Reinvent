@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 import torch
 
-from diversity_filters.base_diversity_filter import BaseDiversityFilter
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.base_diversity_filter import BaseDiversityFilter
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
 from running_modes.reinforcement_learning.inception import Inception

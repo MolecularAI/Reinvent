@@ -2,7 +2,6 @@ import json
 import os
 import time
 
-from diversity_filters.diversity_filter_parameters import DiversityFilterParameters
 from running_modes.configurations import GeneralConfigurationEnvelope
 from running_modes.configurations.curriculum_learning import CurriculumLearningComponents, \
     CurriculumLearningConfiguration

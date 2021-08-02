@@ -3,20 +3,22 @@ import time
 import numpy as np
 import torch
 
-from models.model import Model
+from reinvent_models.reinvent_core.models.model import Model
+
+from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.configurations import GeneralConfigurationEnvelope, ReinforcementLearningConfiguration
 from running_modes.reinforcement_learning.inception import Inception
 from running_modes.reinforcement_learning.logging import ReinforcementLogger
 from running_modes.reinforcement_learning.margin_guard import MarginGuard
 from running_modes.utils.general import to_tensor
-from diversity_filters.base_diversity_filter import BaseDiversityFilter
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.base_diversity_filter import BaseDiversityFilter
 from reinvent_chemistry.utils import get_indices_of_unique_smiles
 
 from reinvent_scoring.scoring.function.base_scoring_function import BaseScoringFunction
 from reinvent_scoring.scoring.score_summary import FinalSummary
 
 
-class ReinforcementRunner:
+class ReinforcementRunner(BaseRunningMode):
     def __init__(self, envelope: GeneralConfigurationEnvelope, config: ReinforcementLearningConfiguration,
                  diversity_filter: BaseDiversityFilter,
                  scoring_function: BaseScoringFunction, inception: Inception):
