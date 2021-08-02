@@ -2,6 +2,4 @@ from running_modes.configurations.logging.base_log_config import BaseLoggerConfi
 
 
 class SamplingLoggerConfiguration(BaseLoggerConfiguration):
-    def __init__(self, sender: str, recipient: str, logging_path: str, job_name="default_name", job_id=None):
-        super().__init__(sender=sender, recipient=recipient, logging_path=logging_path, job_name=job_name,
-                         job_id=job_id)
+    pass

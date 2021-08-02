@@ -8,10 +8,11 @@ from reinvent_chemistry.enums import FilterTypesEnum
 from reinvent_chemistry.file_reader import FileReader
 from reinvent_chemistry.standardization.filter_configuration import FilterConfiguration
 
-import models.dataset as reinvent_dataset
-import models.vocabulary as reinvent_vocabulary
-from models.model import Model
-from running_modes.configurations import AdaptiveLearningRateConfiguration
+import reinvent_models.reinvent_core.models.dataset as reinvent_dataset
+import reinvent_models.reinvent_core.models.vocabulary as reinvent_vocabulary
+from reinvent_models.reinvent_core.models.model import Model
+
+from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
 from running_modes.transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
 from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
@@ -19,7 +20,7 @@ from running_modes.transfer_learning.logging.transfer_learning_logger import Tra
 rdkit.rdBase.DisableLog("rdApp.error")
 
 
-class TransferLearningRunner:
+class TransferLearningRunner(BaseRunningMode):
     """Trains a given model."""
 
     def __init__(self, model: Model, config: TransferLearningConfiguration, general_config):
@@ -28,7 +29,7 @@ class TransferLearningRunner:
         self._logger = TransferLearningLogger(general_config)
         self._config.standardization_filters = self._set_standardization_filters(self._config.standardization_filters)
         self._reader = FileReader(self._config.standardization_filters, self._logger)
-        adaptive_lr_config = AdaptiveLearningRateConfiguration(**self._config.adaptive_lr_config)
+        adaptive_lr_config = self._config.adaptive_lr_config
         self._adaptive_learning_rate = AdaptiveLearningRate(model, self._logger, adaptive_lr_config, self._reader, self._config.standardize)
 
     def run(self):
@@ -93,7 +94,7 @@ class TransferLearningRunner:
                                                        validation_set_path=self._config.validation_smiles_path)
         self._adaptive_learning_rate.update_lr_scheduler(epoch)
 
-    def _set_standardization_filters(self, standardization_filters: dict) -> List[FilterConfiguration]:
+    def _set_standardization_filters(self, standardization_filters: List[dict]) -> List[FilterConfiguration]:
         if standardization_filters:
             filter_configs = [FilterConfiguration(**filters) for filters in standardization_filters]
 

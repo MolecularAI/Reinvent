@@ -3,7 +3,11 @@ import time
 import numpy as np
 import torch
 
-from models.model import Model
+from reinvent_models.reinvent_core.models.model import Model
+
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter import DiversityFilter
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter_parameters import DiversityFilterParameters
+from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.configurations import GeneralConfigurationEnvelope, InceptionConfiguration
 from running_modes.configurations.curriculum_learning.curriculum_learning_components import CurriculumLearningComponents
 from running_modes.configurations.curriculum_learning.curriculum_learning_configuration import \
@@ -13,8 +17,6 @@ from running_modes.curriculum_learning.update_watcher import UpdateWatcher
 from running_modes.reinforcement_learning.inception import Inception
 from running_modes.reinforcement_learning.margin_guard import MarginGuard
 from running_modes.utils import to_tensor
-from diversity_filters.diversity_filter_factory import DiversityFilterFactory
-from diversity_filters.diversity_filter_parameters import DiversityFilterParameters
 
 from reinvent_chemistry.utils import get_indices_of_unique_smiles
 
@@ -23,7 +25,7 @@ from reinvent_scoring.scoring.scoring_function_factory import ScoringFunctionFac
 from reinvent_scoring.scoring.scoring_function_parameters import ScoringFuncionParameters
 
 
-class CurriculumRunner:
+class CurriculumRunner(BaseRunningMode):
     def __init__(self, envelope: GeneralConfigurationEnvelope):
         self.envelope = envelope
         config_components = CurriculumLearningComponents(**self.envelope.parameters)
@@ -145,8 +147,7 @@ class CurriculumRunner:
 
     def _setup_diversity_filter(self, diversity_filter_parameters):
         diversity_filter_parameters = DiversityFilterParameters(**diversity_filter_parameters)
-        diversity_filter_factory = DiversityFilterFactory()
-        diversity_filter = diversity_filter_factory.load_diversity_filter(diversity_filter_parameters)
+        diversity_filter = DiversityFilter(diversity_filter_parameters)
         return diversity_filter
 
     def setup_scoring_function(self, scoring_function_parameters):

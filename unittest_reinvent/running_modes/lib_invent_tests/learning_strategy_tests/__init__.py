@@ -1,0 +1,8 @@
+from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.test_learning_strategy_sdap_strategy \
+    import TestLearningStrategySdapStrategy
+from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.test_learning_strategy_dap_strategy \
+    import TestLearningStrategyDapStrategy
+from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.test_learning_strategy_mauli_strategy \
+    import TestLearningStrategyMauliStrategy
+from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.test_learning_strategy_mascof_strategy \
+    import TestLearningStrategyMascofStrategy

@@ -2,14 +2,15 @@ import os
 import numpy as np
 import tqdm
 
-import models.model as reinvent
+import reinvent_models.reinvent_core.models.model as reinvent
+
+from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.compound_sampling.sample_from_model_configuration import SampleFromModelConfiguration
 from running_modes.sampling.logging.sampling_logger import SamplingLogger
 
 
-class SampleFromModelRunner:
-    """Samples an existing RNN model."""
+class SampleFromModelRunner(BaseRunningMode):
 
     def __init__(self, main_config: GeneralConfigurationEnvelope, configuration: SampleFromModelConfiguration):
         self._model = reinvent.Model.load_from_file(configuration.model_path, sampling_mode=True)
@@ -50,5 +51,7 @@ class SampleFromModelRunner:
                 molecules_left -= current_batch_size
 
                 progress_bar.update(current_batch_size)
+                self.__del__()
+
             self._logger.timestep_report(np.asarray(totalsmiles), np.asarray(totallikelihoods))
         self._logger.log_out_input_configuration()

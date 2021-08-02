@@ -1,0 +1,3 @@
+[submodule "priors"]
+	path = priors
+	url = https://bitbucket.astrazeneca.net/scm/~kdmz924/reinvent-priors.git

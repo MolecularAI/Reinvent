@@ -1,0 +1,4 @@
+from unittest_reinvent.running_modes.lib_invent_tests.reinforcement_learning_tests.test_reinforcement_learning_model \
+    import TestReinforcementLearningModel
+from unittest_reinvent.running_modes.lib_invent_tests.reinforcement_learning_tests.test_reinforcement_learning_likelihood_evaluation \
+    import TestReinforcementLearningLikelihoodEvaluation

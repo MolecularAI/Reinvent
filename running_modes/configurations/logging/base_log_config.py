@@ -1,7 +1,10 @@
-class BaseLoggerConfiguration:
-    def __init__(self, sender: str, recipient: str, logging_path: str, job_name="default_name", job_id=None):
-        self.sender = sender
-        self.recipient = recipient
-        self.logging_path = logging_path
-        self.job_name = job_name
-        self.job_id = job_id
+from typing import Optional
+from pydantic import BaseModel
+
+
+class BaseLoggerConfiguration(BaseModel):
+    recipient: str
+    logging_path: str
+    sender: str = ""
+    job_name: str = "default_name"
+    job_id: Optional[str] = None

@@ -1,9 +1,13 @@
 from dataclasses import dataclass
 
+from reinvent_scoring.scoring import ScoringFuncionParameters
+
+from running_modes.configurations.scoring.scoring_runner_configuration import ScoringRunnerConfiguration
+
 
 @dataclass
 class ScoringRunnerComponents:
     """This class holds the necessary configuration components to do a scoring run."""
 
-    scoring: dict
-    scoring_function: dict
+    scoring: ScoringRunnerConfiguration
+    scoring_function: ScoringFuncionParameters
