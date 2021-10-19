@@ -15,7 +15,7 @@ from reinvent_models.reinvent_core.models.model import Model
 from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
 from running_modes.transfer_learning.adaptive_learning_rate import AdaptiveLearningRate
-from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
+from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
 
 rdkit.rdBase.DisableLog("rdApp.error")
 
@@ -23,10 +23,10 @@ rdkit.rdBase.DisableLog("rdApp.error")
 class TransferLearningRunner(BaseRunningMode):
     """Trains a given model."""
 
-    def __init__(self, model: Model, config: TransferLearningConfiguration, general_config):
+    def __init__(self, model: Model, config: TransferLearningConfiguration, logger: BaseTransferLearningLogger):
         self._model = model
         self._config = config
-        self._logger = TransferLearningLogger(general_config)
+        self._logger = logger
         self._config.standardization_filters = self._set_standardization_filters(self._config.standardization_filters)
         self._reader = FileReader(self._config.standardization_filters, self._logger)
         adaptive_lr_config = self._config.adaptive_lr_config

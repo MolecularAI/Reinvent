@@ -10,6 +10,7 @@ from running_modes.configurations.transfer_learning.adaptive_learning_rate_confi
 from running_modes.configurations.transfer_learning.transfer_learning_configuration import TransferLearningConfiguration
 from running_modes.enums.logging_mode_enum import LoggingModeEnum
 from running_modes.enums.running_mode_enum import RunningModeEnum
+from running_modes.transfer_learning.logging.transfer_learning_logger import TransferLearningLogger
 from running_modes.transfer_learning.transfer_learning_runner import TransferLearningRunner
 from running_modes.utils import set_default_device_cuda
 from unittest_reinvent.fixtures.paths import MAIN_TEST_PATH, SMILES_SET_PATH, PRIOR_PATH
@@ -29,7 +30,7 @@ class TestTransferLearning(unittest.TestCase):
         self.num_epochs = 3
         logdir = os.path.join(self.workfolder, "test_log")
         logconfig = TransferLearningLoggerConfig(logging_path=logdir, recipient=lm_enum.LOCAL,
-                                                 job_name="test_job", use_weights=0)
+                                                 job_name="test_job", use_weights=False)
         self.alr_config = AdaptiveLearningRateConfiguration()
         self.parameters = TransferLearningConfiguration(input_model_path=PRIOR_PATH,
                                                         output_model_path=self.output_file,
@@ -44,7 +45,8 @@ class TestTransferLearning(unittest.TestCase):
                                                    run_type=rm_enum.TRANSFER_LEARNING, version="2.0")
 
         model = reinvent_model.Model.load_from_file(self.parameters.input_model_path)
-        self.runner = TransferLearningRunner(model=model, config=self.parameters, general_config=self.config)
+        logger = TransferLearningLogger(self.config)
+        self.runner = TransferLearningRunner(model=model, config=self.parameters, logger=logger)
 
     def tearDown(self):
         if os.path.isdir(self.workfolder):

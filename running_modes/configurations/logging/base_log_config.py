@@ -7,4 +7,4 @@ class BaseLoggerConfiguration(BaseModel):
     logging_path: str
     sender: str = ""
     job_name: str = "default_name"
-    job_id: Optional[str] = None
+    job_id: Optional[str] = ""

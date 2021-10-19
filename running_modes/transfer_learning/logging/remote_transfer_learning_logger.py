@@ -6,6 +6,7 @@ import running_modes.utils.configuration as utils_log
 from reinvent_chemistry.logging import fraction_valid_smiles
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.transfer_learning.logging.base_transfer_learning_logger import BaseTransferLearningLogger
+from running_modes.configurations.logging import get_remote_logging_auth_token
 
 
 class RemoteTransferLearningLogger(BaseTransferLearningLogger):
@@ -22,7 +23,10 @@ class RemoteTransferLearningLogger(BaseTransferLearningLogger):
         """This is called every time we are posting data to server"""
         try:
             self._logger.warning(f"posting to {to_address}")
-            headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            headers = {
+                'Accept': 'application/json', 'Content-Type': 'application/json',
+                'Authorization': get_remote_logging_auth_token()
+            }
             response = requests.post(to_address, json=data, headers=headers)
 
             if self._is_dev:

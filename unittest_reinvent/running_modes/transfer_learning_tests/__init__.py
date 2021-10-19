@@ -1,1 +1,3 @@
 from unittest_reinvent.running_modes.transfer_learning_tests.test_transfer_learning import TestTransferLearning
+from unittest_reinvent.running_modes.transfer_learning_tests.test_link_invent_transfer_learning import \
+    TestLinkInventTransferLearning

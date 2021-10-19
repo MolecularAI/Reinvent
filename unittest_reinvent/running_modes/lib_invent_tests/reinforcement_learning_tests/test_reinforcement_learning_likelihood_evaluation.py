@@ -1,12 +1,11 @@
 import unittest
-import torch.utils.data as tud
 
+import reinvent_models.lib_invent.models.dataset as md
+import torch.utils.data as tud
 from reinvent_models.lib_invent.enums.generative_model_regime import GenerativeModelRegimeEnum
 from reinvent_models.lib_invent.models.model import DecoratorModel
-import reinvent_models.lib_invent.models.dataset as md
 
-from running_modes.lib_invent.rl_actions import LikelihoodEvaluation
-from unittest_reinvent.fixtures.paths import LIBINVENT_PRIOR_PATH # TODO: Add this
+from unittest_reinvent.fixtures.paths import LIBINVENT_PRIOR_PATH  # TODO: Add this
 from unittest_reinvent.fixtures.test_data import SCAFFOLD_SUZUKI
 
 

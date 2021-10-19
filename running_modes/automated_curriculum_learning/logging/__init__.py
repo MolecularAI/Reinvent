@@ -1,4 +1,3 @@
 from running_modes.automated_curriculum_learning.logging.console_message import ConsoleMessage
 from running_modes.automated_curriculum_learning.logging.local_auto_cl_logger import LocalAutoCLLogger
-from running_modes.automated_curriculum_learning.logging.local_auto_cl_logger_curriculum import LocalAutoCLLoggerCurriculum
 from running_modes.automated_curriculum_learning.logging.auto_cl_logger import AutoCLLogger

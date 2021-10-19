@@ -41,7 +41,7 @@ class LocalCurriculumLogger(BaseCurriculumLogger):
                                  augmented_likelihood, diversity_filter)
 
     def save_final_state(self, agent, diversity_filter):
-        agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
+        agent.save(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
         self.save_diversity_memory(diversity_filter)
         self._summary_writer.close()
 
@@ -86,7 +86,7 @@ class LocalCurriculumLogger(BaseCurriculumLogger):
         smarts_pattern = ""
         for summary_component in score_summary.scaffold_log:
             if summary_component.parameters.component_type == self._sf_component_enum.MATCHING_SUBSTRUCTURE:
-                smarts = summary_component.parameters.smiles
+                smarts = summary_component.parameters.specific_parameters.get(self._specific_parameters_enum.SMILES, [])
                 if len(smarts) > 0:
                     smarts_pattern = smarts[0]
         return smarts_pattern

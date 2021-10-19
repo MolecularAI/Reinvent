@@ -10,7 +10,7 @@ class CurriculumLogger:
 
     def __new__(cls, configuration: GeneralConfigurationEnvelope) -> BaseCurriculumLogger:
         logging_mode_enum = LoggingModeEnum()
-        rl_config = CurriculumLoggerConfiguration(**configuration.logging)
+        rl_config = CurriculumLoggerConfiguration.parse_obj(configuration.logging)
         if rl_config.recipient == logging_mode_enum.LOCAL:
             logger_instance = LocalCurriculumLogger(configuration)
         else:

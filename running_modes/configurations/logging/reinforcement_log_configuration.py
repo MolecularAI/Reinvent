@@ -2,5 +2,5 @@ from running_modes.configurations.logging.base_log_config import BaseLoggerConfi
 
 
 class ReinforcementLoggerConfiguration(BaseLoggerConfiguration):
-    resultdir: str
+    result_folder: str
     logging_frequency: int = 0

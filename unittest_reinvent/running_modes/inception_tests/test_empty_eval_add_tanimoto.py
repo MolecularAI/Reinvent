@@ -18,9 +18,7 @@ class TestInceptionEmptyEvalAddTanimoto(TestInceptionEmptyBase):
         scoring = ComponentParameters(component_type=self.sf_enum.TANIMOTO_SIMILARITY,
                                       name="tanimoto_similarity",
                                       weight=1.,
-                                      smiles=[PROPANE, ETHANE],
-                                      model_path="",
-                                      specific_parameters={})
+                                      specific_parameters={"smiles":[PROPANE, ETHANE]})
         self.scoring_function = CustomSum(parameters=[scoring])
         self.prior = Model.load_from_file(PRIOR_PATH)
 

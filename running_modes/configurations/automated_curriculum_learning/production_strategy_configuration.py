@@ -1,17 +1,20 @@
 from dataclasses import dataclass
 
-from running_modes.configurations.automated_curriculum_learning.strategy_parameters_configuration import \
-    ProductionStrategyParametersConfiguration
+from reinvent_scoring import ScoringFunctionParameters
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter_parameters import \
+    DiversityFilterParameters
+
+from running_modes.configurations import InceptionConfiguration
 
 
 @dataclass
 class ProductionStrategyConfiguration:
-    # production strategy name
     name: str
-    # production sf, df, inception shared with ranking
-    scoring_function: dict
-    diversity_filter: dict
-    inception: dict
-    # boolean to denote whether to retain the merging phase inception memory
+    scoring_function: ScoringFunctionParameters
+    diversity_filter: DiversityFilterParameters
+    inception: InceptionConfiguration
     retain_inception: bool
-    parameters: ProductionStrategyParametersConfiguration
+    batch_size: int = 64
+    learning_rate: float = 0.0001
+    sigma: float = 120
+    n_steps: int = 100

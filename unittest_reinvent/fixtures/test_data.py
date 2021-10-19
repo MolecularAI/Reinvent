@@ -31,6 +31,7 @@ DECORATION_NO_SUZUKI = '[*]C'
 CELECOXIB_SCAFFOLD = 'Cc1ccc(cc1)c2cc(nn2c3ccc(cc3)S(=O)(=O)N)[*:0]'
 SCAFFOLD_TO_DECORATE = "[*]c1ccc(cc1)c2cc(nn2c3ccc(cc3)S(=O)(=O)N)[*]"
 
+WARHEAD_PAIR = '*c1ncncc1|*c1ncncc1'
 
 REP_LIKELIHOOD = np.array(
     [15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 15.0, 10.0, 10.0, 10.0,

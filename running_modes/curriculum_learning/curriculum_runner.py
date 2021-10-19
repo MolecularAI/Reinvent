@@ -22,7 +22,7 @@ from reinvent_chemistry.utils import get_indices_of_unique_smiles
 
 from reinvent_scoring.scoring.score_summary import FinalSummary
 from reinvent_scoring.scoring.scoring_function_factory import ScoringFunctionFactory
-from reinvent_scoring.scoring.scoring_function_parameters import ScoringFuncionParameters
+from reinvent_scoring.scoring.scoring_function_parameters import ScoringFunctionParameters
 
 
 class CurriculumRunner(BaseRunningMode):
@@ -151,7 +151,7 @@ class CurriculumRunner(BaseRunningMode):
         return diversity_filter
 
     def setup_scoring_function(self, scoring_function_parameters):
-        scoring_function_parameters = ScoringFuncionParameters(**scoring_function_parameters)
+        scoring_function_parameters = ScoringFunctionParameters(**scoring_function_parameters)
         scoring_function_instance = ScoringFunctionFactory(scoring_function_parameters)
         return scoring_function_instance
 
