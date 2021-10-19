@@ -6,6 +6,8 @@ from torch.utils.tensorboard import SummaryWriter
 
 import reinvent_chemistry.logging as ul_rl
 from reinvent_scoring.scoring.diversity_filters.reinvent_core.base_diversity_filter import BaseDiversityFilter
+
+from running_modes.configurations import ReinforcementLoggerConfiguration
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.reinforcement_learning.logging import ConsoleMessage
 from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
@@ -14,8 +16,8 @@ from reinvent_scoring.scoring.enums.scoring_function_component_enum import Scori
 
 
 class LocalReinforcementLogger(BaseReinforcementLogger):
-    def __init__(self, configuration: GeneralConfigurationEnvelope):
-        super().__init__(configuration)
+    def __init__(self, configuration: GeneralConfigurationEnvelope, rl_config: ReinforcementLoggerConfiguration):
+        super().__init__(configuration, rl_config)
         self._summary_writer = SummaryWriter(log_dir=self._log_config.logging_path)
         self._summary_writer.add_text('Legends',
                                       'The values under each compound are read as: [Agent; Prior; Target; Score]')
@@ -41,8 +43,8 @@ class LocalReinforcementLogger(BaseReinforcementLogger):
                                  augmented_likelihood, diversity_filter)
 
     def save_final_state(self, agent, scaffold_filter):
-        agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
-        self.save_scaffold_memory(scaffold_filter)
+        agent.save_to_file(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
+        self.save_filter_memory(scaffold_filter)
         self._summary_writer.close()
         self.log_out_input_configuration()
 
@@ -87,7 +89,7 @@ class LocalReinforcementLogger(BaseReinforcementLogger):
         smarts_pattern = ""
         for summary_component in score_summary.scaffold_log:
             if summary_component.parameters.component_type == self._sf_component_enum.MATCHING_SUBSTRUCTURE:
-                smarts = summary_component.parameters.smiles
+                smarts = summary_component.parameters.specific_parameters.get(self._specific_parameters_enum.SMILES, [])
                 if len(smarts) > 0:
                     smarts_pattern = smarts[0]
         return smarts_pattern

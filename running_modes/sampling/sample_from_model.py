@@ -27,10 +27,6 @@ class SampleFromModelRunner(BaseRunningMode):
             pass
         return open(path, "wt+")
 
-    def __del__(self):
-        self._output.close()
-
-
     def run(self):
         molecules_left = self._num_smiles
         totalsmiles = []
@@ -51,7 +47,7 @@ class SampleFromModelRunner(BaseRunningMode):
                 molecules_left -= current_batch_size
 
                 progress_bar.update(current_batch_size)
-                self.__del__()
 
             self._logger.timestep_report(np.asarray(totalsmiles), np.asarray(totallikelihoods))
+        self._output.close()
         self._logger.log_out_input_configuration()

@@ -5,8 +5,9 @@ import sys
 from abc import ABC, abstractmethod
 from typing import Tuple, List
 
-from rdkit import Chem
-from rdkit.Chem import inchi
+from reinvent_chemistry.conversions import Conversions
+
+# from rdkit.Chem import inchi
 
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.transfer_learning_log_configuration import TransferLearningLoggerConfig
@@ -21,6 +22,8 @@ class BaseTransferLearningLogger(ABC):
         self._rows = 4
         self._columns = 5
         self._sample_size = self._rows * self._columns
+
+        self._conversions = Conversions()
 
     def log_message(self, message: str):
         self._logger.info(message)
@@ -66,10 +69,10 @@ class BaseTransferLearningLogger(ABC):
         return list_of_labels, sorted_mols
 
     def _append_inchi_keys_dictionary_by_reference(self, inchi_dict: dict, smile: str):
-        mol = Chem.MolFromSmiles(smile)
+        mol = self._conversions.smile_to_mol(smile)
         if mol is not None:
             try:
-                inchi_key = inchi.MolToInchiKey(mol)
+                inchi_key = self._conversions.mol_to_inchi_key(mol)
                 try:
                     inchi_dict[inchi_key][0] += 1
                 except:

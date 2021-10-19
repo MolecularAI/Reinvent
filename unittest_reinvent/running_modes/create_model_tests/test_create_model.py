@@ -6,9 +6,11 @@ from running_modes.configurations.logging.create_model_log_configuration import 
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.create_model.create_model_configuration import CreateModelConfiguration
 from running_modes.create_model.create_model import CreateModelRunner
+from running_modes.create_model.logging.local_create_model_logger import LocalCreateModelLogger
 from unittest_reinvent.fixtures.paths import MAIN_TEST_PATH, SMILES_SET_PATH
 from running_modes.enums.running_mode_enum import RunningModeEnum
 from running_modes.enums.logging_mode_enum import LoggingModeEnum
+
 
 class TestCreateModel(unittest.TestCase):
 
@@ -27,26 +29,27 @@ class TestCreateModel(unittest.TestCase):
         self.configuration_envelope = GeneralConfigurationEnvelope(parameters=vars(self.config),
                                                                    logging=vars(log_conf),
                                                                    run_type=self.rm_enums.VALIDATION,
-                                                                   version="2.0")
+                                                                   version="3.0")
+        self.logger = LocalCreateModelLogger(self.configuration_envelope)
 
     def tearDown(self):
         if os.path.isdir(self.workfolder):
             shutil.rmtree(self.workfolder)
 
     def test_save_model_1(self):
-        runner = CreateModelRunner(self.configuration_envelope, self.config)
+        runner = CreateModelRunner(self.config, self.logger)
         runner.run()
         self.assertEqual(os.path.isfile(self.output_file), True)
 
     def test_save_model_2(self):
-        runner = CreateModelRunner(self.configuration_envelope, self.config)
+        runner = CreateModelRunner(self.config, self.logger)
         model = runner.run()
         self.assertEqual(model.max_sequence_length, self.config.max_sequence_length)
         self.assertEqual(len(model.vocabulary.tokens()), 29)
 
     def test_save_model_3(self):
         self.config.standardize = False
-        runner = CreateModelRunner(self.configuration_envelope, self.config)
+        runner = CreateModelRunner(self.config, self.logger)
         model = runner.run()
         self.assertEqual(model.max_sequence_length, self.config.max_sequence_length)
         self.assertEqual(len(model.vocabulary.tokens()), 30)

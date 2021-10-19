@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 import torch
+from reinvent_scoring import ComponentSpecificParametersEnum
 from reinvent_scoring.scoring.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
 from reinvent_scoring.scoring.score_summary import FinalSummary
 
@@ -21,6 +22,7 @@ class BaseAutoCLLogger(ABC):
         self._setup_workfolder()
         self._logger = self._setup_logger()
         self._start_time = time.time()
+        self._specific_parameters_enum = ComponentSpecificParametersEnum()
 
     @abstractmethod
     def log_message(self, message: str):
@@ -34,7 +36,7 @@ class BaseAutoCLLogger(ABC):
         raise NotImplementedError("timestep_report method is not implemented")
 
     def log_out_input_configuration(self):
-        file = os.path.join(self._log_config.resultdir, "input.json")
+        file = os.path.join(self._log_config.result_folder, "input.json")
         jsonstr = json.dumps(self._configuration, default=lambda x: x.__dict__, sort_keys=True, indent=4,
                              separators=(',', ': '))
         with open(file, 'w') as f:
@@ -46,33 +48,30 @@ class BaseAutoCLLogger(ABC):
             time_passed = round(time.time() - self._start_time, 4)
             f.write(f"Time from start: {time_passed}s, {text} \n")
 
-    # def log_out_inception(self, inception: Inception):
-    #     inception.memory.to_csv(f"{self._log_config.resultdir}/memory.csv")
-
     def save_checkpoint(self, step, scaffold_filter, agent):
         actual_step = step + 1
         if self._log_config.logging_frequency > 0 and actual_step % self._log_config.logging_frequency == 0:
             self.save_scaffold_memory(scaffold_filter)
-            agent.save(os.path.join(self._log_config.resultdir, f'Agent.{actual_step}.ckpt'))
+            agent.save(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
 
     @abstractmethod
     def save_final_state(self, agent, scaffold_filter):
         raise NotImplementedError("save_final_state method is not implemented")
 
     def save_merging_state(self, agent, scaffold_filter, name):
-        agent.save(os.path.join(self._log_config.resultdir, f'Agent{name}.ckpt'))
+        agent.save(os.path.join(self._log_config.result_folder, f'Agent{name}.ckpt'))
         self.save_scaffold_memory(scaffold_filter, memory_name=name)
 
     def save_scaffold_memory(self, scaffold_filter, memory_name: str = ""):
         scaffold_memory = scaffold_filter.get_memory_as_dataframe()
-        self.save_to_csv(scaffold_memory=scaffold_memory, path=self._log_config.resultdir, memory_name=memory_name,
+        self.save_to_csv(scaffold_memory=scaffold_memory, path=self._log_config.result_folder, memory_name=memory_name,
                          job_name=self._log_config.job_name)
 
     def _setup_workfolder(self):
         if not os.path.isdir(self._log_config.logging_path):
             os.makedirs(self._log_config.logging_path)
-        if not os.path.isdir(self._log_config.resultdir):
-            os.makedirs(self._log_config.resultdir)
+        if not os.path.isdir(self._log_config.result_folder):
+            os.makedirs(self._log_config.result_folder)
 
     def _setup_logger(self):
         handler = logging.StreamHandler()
@@ -87,9 +86,6 @@ class BaseAutoCLLogger(ABC):
             logger.setLevel(logging.INFO)
         logger.propagate = False
         return logger
-
-    def __del__(self):
-        logging.shutdown()
 
     def save_to_csv(self, scaffold_memory, path: str, memory_name: str = "", job_name: str = "default_job"):
         sf_enum = ScoringFunctionComponentNameEnum()

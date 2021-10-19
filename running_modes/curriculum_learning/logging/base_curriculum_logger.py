@@ -4,6 +4,7 @@ import os
 from abc import ABC, abstractmethod
 import numpy as np
 import torch
+from reinvent_scoring import ComponentSpecificParametersEnum
 
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
@@ -18,6 +19,7 @@ class BaseCurriculumLogger(ABC):
         self._log_config = ReinforcementLoggerConfiguration(**self._configuration.logging)
         self._setup_workfolder()
         self._logger = self._setup_logger()
+        self._specific_parameters_enum = ComponentSpecificParametersEnum()
 
     @abstractmethod
     def log_message(self, message: str):
@@ -31,20 +33,20 @@ class BaseCurriculumLogger(ABC):
         raise NotImplementedError("timestep_report method is not implemented")
 
     def log_out_input_configuration(self, configuration: GeneralConfigurationEnvelope, step=0):
-        output_file = os.path.join(self._log_config.resultdir, f"input.{step}.json")
+        output_file = os.path.join(self._log_config.result_folder, f"input.{step}.json")
         jsonstr = json.dumps(configuration, default=lambda x: x.__dict__, sort_keys=True, indent=4,
                              separators=(',', ': '))
         with open(output_file, 'w') as f:
             f.write(jsonstr)
 
     def log_out_inception(self, inception: Inception):
-        inception.memory.to_csv(f"{self._log_config.resultdir}/memory.csv")
+        inception.memory.to_csv(f"{self._log_config.result_folder}/memory.csv")
 
     def save_checkpoint(self, step, scaffold_filter, agent):
         actual_step = step + 1
         if self._log_config.logging_frequency > 0 and actual_step % self._log_config.logging_frequency == 0:
             self.save_diversity_memory(scaffold_filter)
-            agent.save(os.path.join(self._log_config.resultdir, f'Agent.{actual_step}.ckpt'))
+            agent.save(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
 
     @abstractmethod
     def save_final_state(self, agent, scaffold_filter):
@@ -52,7 +54,7 @@ class BaseCurriculumLogger(ABC):
 
     def save_diversity_memory(self, diversity_filter):
         diversity_memory = diversity_filter.get_memory_as_dataframe()
-        self.save_to_csv(diversity_memory, self._log_config.resultdir, self._log_config.job_name)
+        self.save_to_csv(diversity_memory, self._log_config.result_folder, self._log_config.job_name)
 
     def save_diversity_memory_checkpoint(self, diversity_filter, step):
         if not os.path.isdir(self._log_config.logging_path):
@@ -70,8 +72,8 @@ class BaseCurriculumLogger(ABC):
     def _setup_workfolder(self):
         if not os.path.isdir(self._log_config.logging_path):
             os.makedirs(self._log_config.logging_path)
-        if not os.path.isdir(self._log_config.resultdir):
-            os.makedirs(self._log_config.resultdir)
+        if not os.path.isdir(self._log_config.result_folder):
+            os.makedirs(self._log_config.result_folder)
 
     def _setup_logger(self):
         handler = logging.StreamHandler()

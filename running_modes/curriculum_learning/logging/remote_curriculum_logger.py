@@ -12,6 +12,7 @@ from running_modes.curriculum_learning.logging import BaseCurriculumLogger
 from reinvent_scoring.scoring.diversity_filters.reinvent_core.base_diversity_filter import BaseDiversityFilter
 from reinvent_scoring.scoring.score_summary import FinalSummary
 from reinvent_scoring.scoring.enums.scoring_function_component_enum import ScoringFunctionComponentNameEnum
+from running_modes.configurations.logging import get_remote_logging_auth_token
 
 
 class RemoteCurriculumLogger(BaseCurriculumLogger):
@@ -41,14 +42,17 @@ class RemoteCurriculumLogger(BaseCurriculumLogger):
         self._notify_server(data, self._log_config.recipient)
 
     def save_final_state(self, agent, scaffold_filter):
-        agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
+        agent.save(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
         self.save_diversity_memory(scaffold_filter)
 
     def _notify_server(self, data, to_address):
         """This is called every time we are posting data to server"""
         try:
             self._logger.warning(f"posting to {to_address}")
-            headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            headers = {
+                'Accept': 'application/json', 'Content-Type': 'application/json',
+                'Authorization': get_remote_logging_auth_token()
+            }
             response = requests.post(to_address, json=data, headers=headers)
 
             if self._is_dev:
@@ -68,7 +72,7 @@ class RemoteCurriculumLogger(BaseCurriculumLogger):
         smarts_pattern = ""
         for summary_component in score_summary.scaffold_log:
             if summary_component.parameters.component_type == self._sf_component_enum.MATCHING_SUBSTRUCTURE:
-                smarts = summary_component.parameters.smiles
+                smarts = summary_component.parameters.specific_parameters.get(self._specific_parameters_enum.SMILES, [])
                 if len(smarts) > 0:
                     smarts_pattern = smarts[0]
         return smarts_pattern

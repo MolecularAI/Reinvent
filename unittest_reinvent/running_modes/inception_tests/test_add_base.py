@@ -33,9 +33,7 @@ class TestInceptionAddBase(unittest.TestCase):
         scoring = ComponentParameters(component_type=self.sf_enum.JACCARD_DISTANCE,
                                       name=self.sf_enum.JACCARD_DISTANCE,
                                       weight=1.,
-                                      smiles=[METHOXYHYDRAZINE, ASPIRIN],
-                                      model_path="",
-                                      specific_parameters={})
+                                      specific_parameters={"smiles":[METHOXYHYDRAZINE, ASPIRIN]})
         scoring_function = CustomSum(parameters=[scoring])
 
         self.inception_model = Inception(configuration=config, scoring_function=scoring_function, prior=prior)

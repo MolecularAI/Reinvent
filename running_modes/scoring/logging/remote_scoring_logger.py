@@ -3,6 +3,7 @@ import requests
 import running_modes.utils.configuration as utils_log
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.scoring.logging.base_scoring_logger import BaseScoringLogger
+from running_modes.configurations.logging import get_remote_logging_auth_token
 
 
 class RemoteScoringLogger(BaseScoringLogger):
@@ -17,7 +18,10 @@ class RemoteScoringLogger(BaseScoringLogger):
         """This is called every time we are posting data to server"""
         try:
             self._logger.warning(f"posting to {to_address}")
-            headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+            headers = {
+                'Accept': 'application/json', 'Content-Type': 'application/json',
+                'Authorization': get_remote_logging_auth_token()
+            }
             response = requests.post(to_address, json=data, headers=headers)
 
             if self._is_dev:

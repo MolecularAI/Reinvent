@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 from rdkit.Chem import inchi
-from rdkit import Chem
+from reinvent_chemistry.conversions import Conversions
 from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.configurations.logging.sampling_log_configuration import SamplingLoggerConfiguration
 
@@ -19,6 +19,8 @@ class BaseSamplingLogger(ABC):
         self._rows = 4
         self._columns = 5
         self._sample_size = self._rows * self._columns
+
+        self._conversions = Conversions()
 
     @abstractmethod
     def log_message(self, message: str):
@@ -57,7 +59,7 @@ class BaseSamplingLogger(ABC):
         """returns key value pair where value is [count, mol]"""
         inchi_dict = {}
         for smile in smiles:
-            mol = Chem.MolFromSmiles(smile)
+            mol = self._conversions.smile_to_mol(smile)
             if mol is not None:
                 inchi_key = inchi.MolToInchiKey(mol)
                 try:

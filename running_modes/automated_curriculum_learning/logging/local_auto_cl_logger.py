@@ -43,11 +43,10 @@ class LocalAutoCLLogger(BaseAutoCLLogger):
                                  augmented_likelihood, diversity_filter)
 
     def save_final_state(self, agent, scaffold_filter):
-        agent.save(os.path.join(self._log_config.resultdir, 'Agent.ckpt'))
+        agent.save(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
         self.save_scaffold_memory(scaffold_filter)
         self._summary_writer.close()
         self.log_out_input_configuration()
-
 
     def _tensorboard_report(self, step, smiles, score, score_summary: FinalSummary, agent_likelihood, prior_likelihood,
                             augmented_likelihood, diversity_filter: BaseDiversityFilter):
@@ -90,7 +89,7 @@ class LocalAutoCLLogger(BaseAutoCLLogger):
         smarts_pattern = ""
         for summary_component in score_summary.scaffold_log:
             if summary_component.parameters.component_type == self._sf_component_enum.MATCHING_SUBSTRUCTURE:
-                smarts = summary_component.parameters.smiles
+                smarts = summary_component.parameters.specific_parameters.get(self._specific_parameters_enum.SMILES, [])
                 if len(smarts) > 0:
                     smarts_pattern = smarts[0]
         return smarts_pattern

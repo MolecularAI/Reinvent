@@ -1,6 +1,6 @@
 import torch
 
-from running_modes.lib_invent.learning_strategy.learning_strategy_enum import LearningStrategyEnum
+from running_modes.reinforcement_learning.learning_strategy import LearningStrategyEnum
 from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.base_learning_strategy import \
     BaseTestLearningStrategy
 

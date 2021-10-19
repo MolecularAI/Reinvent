@@ -1,40 +1,18 @@
-import json
-import logging
-import os
-import sys
-
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
-from running_modes.configurations.logging.create_model_log_configuration import CreateModelLoggerConfiguration
+from running_modes.configurations import GeneralConfigurationEnvelope, ReinforcementLoggerConfiguration
+from running_modes.create_model.logging.base_create_model_logger import BaseCreateModelLogger
+from running_modes.create_model.logging.local_create_model_logger import LocalCreateModelLogger
+from running_modes.create_model.logging.remote_create_model_logger import RemoteCreateModelLogger
+from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class CreateModelLogger:
-    def __init__(self, configuration: GeneralConfigurationEnvelope):
-        self.configuration = configuration
-        self._log_config = CreateModelLoggerConfiguration(**self.configuration.logging)
-        self._common_logger = self._setup_logger(name="create_model_logger")
-
-    def log_message(self, message: str):
-        self._common_logger.info(message)
-
-    def log_out_input_configuration(self):
-        file = os.path.join(self._log_config.logging_path, "input.json")
-        jsonstr = json.dumps(self.configuration, default=lambda x: x.__dict__, sort_keys=True, indent=4,
-                             separators=(',', ': '))
-        with open(file, 'w') as f:
-            f.write(jsonstr)
-
-    def _setup_logger(self, name, level=logging.INFO):
-        logging.getLogger(name).addHandler(logging.NullHandler())
-        handler = logging.StreamHandler(stream=sys.stderr)
-
-        formatter = logging.Formatter(
-            fmt="%(asctime)s: %(module)s.%(funcName)s +%(lineno)s: %(levelname)-8s %(message)s",
-            datefmt="%H:%M:%S"
-        )
-        handler.setFormatter(formatter)
-
-        logger = logging.getLogger(name)
-        if not logger.handlers:
-            logger.setLevel(level)
-            logger.addHandler(handler)
+    def __new__(cls, configuration: GeneralConfigurationEnvelope) -> BaseCreateModelLogger:
+        logging_mode_enum = LoggingModeEnum()
+        logging_config = ReinforcementLoggerConfiguration.parse_obj(configuration.logging)
+        if logging_config.recipient == logging_mode_enum.LOCAL:
+            logger = LocalCreateModelLogger(configuration)
+        elif logging_config.recipient == logging_mode_enum.REMOTE:
+            logger = RemoteCreateModelLogger(configuration)
+        else:
+            raise ValueError(f"Incorrect logger recipient: `{logging_config.recipient}` provided")
         return logger

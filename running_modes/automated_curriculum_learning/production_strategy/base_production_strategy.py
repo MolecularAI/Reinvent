@@ -5,39 +5,34 @@ import numpy as np
 import torch
 from reinvent_chemistry import get_indices_of_unique_smiles
 from reinvent_models.reinvent_core.models.model import Model
-from reinvent_scoring import ScoringFuncionParameters, ScoringFunctionFactory, FinalSummary
+from reinvent_scoring import ScoringFunctionFactory, FinalSummary, ScoringFunctionParameters
 from reinvent_scoring.scoring.diversity_filters.reinvent_core.base_diversity_filter import BaseDiversityFilter
 from reinvent_scoring.scoring.function.base_scoring_function import BaseScoringFunction
 
 from running_modes.automated_curriculum_learning.logging.base_auto_cl_logger import BaseAutoCLLogger
-from running_modes.automated_curriculum_learning.scoring_table import ScoringTable
 from running_modes.configurations.automated_curriculum_learning.production_strategy_configuration import \
     ProductionStrategyConfiguration
-from running_modes.utils import to_tensor
-
 from running_modes.reinforcement_learning.inception import Inception
+from running_modes.utils import to_tensor
 
 
 class BaseProductionStrategy(ABC):
-    def __init__(self, prior: Model, scoring_function_params: ScoringFuncionParameters,
-                 diversity_filter: BaseDiversityFilter, inception: Inception,
-                 configuration: ProductionStrategyConfiguration, logger: BaseAutoCLLogger, scoring_table: ScoringTable):
-        self._parameters = configuration.parameters
+    def __init__(self, prior: Model, diversity_filter: BaseDiversityFilter, inception: Inception,
+                 scoring_function: BaseScoringFunction, configuration: ProductionStrategyConfiguration,
+                 logger: BaseAutoCLLogger):
+        self._parameters = configuration
         self._prior = prior
-        self._scoring_function_name = scoring_function_params.name
-        # List of scoring function components
-        self._scoring_function_params = scoring_function_params.parameters
         self._diversity_filter = diversity_filter
         self._inception = inception
+        self._scoring_function = scoring_function
         self._logger = logger
-        self._scoring_table = scoring_table
 
     @abstractmethod
     def run(self, cl_agent: Model, steps_so_far: int):
         raise NotImplementedError("run not implemented.")
 
     def setup_scoring_function(self, name: str, parameter_list: List[Dict]) -> BaseScoringFunction:
-        scoring_function_parameters = ScoringFuncionParameters(name=name, parameters=parameter_list, parallel=False)
+        scoring_function_parameters = ScoringFunctionParameters(name=name, parameters=parameter_list, parallel=False)
         scoring_function_instance = ScoringFunctionFactory(scoring_function_parameters)
 
         self._log_sf_update(current_parameters=parameter_list)
@@ -48,8 +43,6 @@ class BaseProductionStrategy(ABC):
                       f"{[component.get('name') for component in current_parameters]}"
         # log in console
         self._logger.log_message(text_to_log)
-        # log in a text file
-        self._logger.log_text_to_file(text_to_log)
 
     def _disable_prior_gradients(self):
         # There might be a more elegant way of disabling gradients

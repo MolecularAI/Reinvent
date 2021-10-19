@@ -10,3 +10,5 @@ from unittest_reinvent.running_modes.reinforcement_tests.test_margin_guard_adjus
 from unittest_reinvent.running_modes.reinforcement_tests.test_margin_guard_threshold import MarginGuardThresholdTest
 from unittest_reinvent.running_modes.reinforcement_tests.test_margin_guard_mean_stats import \
     MarginGuardMeanStatsTest
+from unittest_reinvent.running_modes.reinforcement_tests.test_link_invent_reinforcement_learning_runner import \
+    TestLinkInventReinforcementLearningRunner

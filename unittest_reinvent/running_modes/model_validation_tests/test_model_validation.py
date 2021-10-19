@@ -48,7 +48,7 @@ class TestModelValidity(unittest.TestCase):
         self._assert_output(["INFO:validation_logger:Valid model"])
 
     def test_invalid_model(self):
-        self.parameters.model_path = "".join([ACTIVITY_REGRESSION, "_NO-MODEL_"])
+        self.parameters.specific_parameters["model_path"] = "".join([ACTIVITY_REGRESSION, "_NO-MODEL_"])
         self._assert_output(["INFO:validation_logger:Invalid model"])
 
     def test_invalid_model_type(self):
