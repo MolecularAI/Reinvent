@@ -40,12 +40,10 @@ Each running mode can be executed by `python input.py some_running_mode.json` af
 Tests 
 -----
 The REINVENT project uses the `unittest` framework for its tests; before you run them you first have to create a 
-configuration, which the tests will use.
-
-In the project directory, create a `config.json` file in the `configs/` directory; you can use the example 
-config (`example.config.json`) as a base.  Make sure that you set `MAIN_TEST_PATH` to a non-existent directory; it
-is where temporary files will be written during the tests; if it is set to an existing directory, that directory 
-will be removed once the tests have finished.
+configuration, which the tests will use. In the project directory, create a `config.json` file in the `configs/` directory; 
+you can use the example config (`example.config.json`) as a base. The unit tests will use the paths specified in your 
+'config.json' file. sure that you set `MAIN_TEST_PATH` to a non-existent directory; it is where temporary files will be
+written during the tests; if it is set to an existing directory, that directory will be removed once the tests have finished.
 
 Some tests require a proprietary OpenEye license; you have to set up a few things to make the tests read your
 license.  The simple way is to just set the `OE_LICENSE` environment variable to the path of the file containing the
