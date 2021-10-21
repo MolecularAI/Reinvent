@@ -38,7 +38,7 @@ class BaseReinforcementLogger(ABC):
         actual_step = step + 1
         if self._log_config.logging_frequency > 0 and actual_step % self._log_config.logging_frequency == 0:
             self.save_filter_memory(diversity_filter)
-            agent.save(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
+            agent.save_to_file(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
 
     def save_filter_memory(self, diversity_filter):
         diversity_memory = diversity_filter.get_memory_as_dataframe()
