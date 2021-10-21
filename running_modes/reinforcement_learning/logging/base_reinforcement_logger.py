@@ -47,7 +47,7 @@ class BaseReinforcementLogger(ABC):
         actual_step = step + 1
         if self._log_config.logging_frequency > 0 and actual_step % self._log_config.logging_frequency == 0:
             self.save_filter_memory(scaffold_filter)
-            agent.save(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
+            agent.save_to_file(os.path.join(self._log_config.result_folder, f'Agent.{actual_step}.ckpt'))
 
     @abstractmethod
     def save_final_state(self, agent, scaffold_filter):

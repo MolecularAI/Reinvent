@@ -213,7 +213,7 @@ dependencies:
     - protobuf==3.11.3
     - reinvent-chemistry==0.0.40
     - reinvent-models==0.0.12
-    - reinvent-scoring==0.0.50
+    - reinvent-scoring==0.0.57
     - tensorboard==1.15.0
     - tensorflow==1.15.2
     - tensorflow-estimator==1.15.1
