@@ -47,9 +47,10 @@ Tests
 -----
 The REINVENT project uses the `unittest` framework for its tests; before you run them you first have to create a 
 configuration, which the tests will use. In the project directory, create a `config.json` file in the `configs/` directory; 
-you can use the example config (`example.config.json`) as a base. The unit tests will use the paths specified in your 
-'config.json' file, e.g, if testing reinforcement learning, the corresponding unit tests will require a prior: specify the path
-to the prior in the "PRIOR_PATH" field.
+you can use the example config (`example.config.json`) as a base. The simplest way is to make a copy of the `example.config.json`
+and name it `config.json`. At this point, `REINVENT` can be executed. If you want to further run the unit tests, relevant paths 
+will need to be specified in your 'config.json' file, e.g, if testing reinforcement learning, the corresponding unit tests 
+will require a prior: specify the path to the prior in the "PRIOR_PATH" field.
 
 Important: Make sure that you set `MAIN_TEST_PATH` to a non-existent directory; it is where temporary files will be
 written during the tests; if it is set to an existing directory, that directory will be removed once the tests have finished.
