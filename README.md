@@ -17,6 +17,13 @@ Installation
 5. Use the tool.
 
      
+System Requirements
+-------------------
+
+* Python 3.7
+* Cuda-enabled GPU
+* `REINVENT` has been tested on Linux
+
 
 Tutorials / `jupyter` notebooks
 -----
