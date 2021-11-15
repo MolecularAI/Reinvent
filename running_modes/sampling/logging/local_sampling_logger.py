@@ -18,9 +18,6 @@ class LocalSamplingLogger(BaseSamplingLogger):
     def timestep_report(self, smiles: [], likelihoods: np.array):
         self._log_timestep(smiles, likelihoods)
 
-    def __del__(self):
-        self._summary_writer.close()
-
     def _log_timestep(self, smiles: np.array, likelihoods: np.array):
         valid_smiles_fraction = fraction_valid_smiles(smiles)
         fraction_unique_entries = self._get_unique_entires_fraction(likelihoods)
