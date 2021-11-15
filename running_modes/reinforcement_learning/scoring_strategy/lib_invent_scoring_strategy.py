@@ -19,15 +19,15 @@ class LibInventScoringStrategy(BaseScoringStrategy):
         self.reaction_filter = ReactionFilter(strategy_configuration.reaction_filter)
 
     def evaluate(self, sampled_sequences: List[SampledSequencesDTO], step) -> FinalSummary:
-        score_summary = self._apply_scoring_function(sampled_sequences)
+        score_summary = self._apply_scoring_function(sampled_sequences, step)
 
         score_summary.total_score = self.diversity_filter.update_score(score_summary, sampled_sequences, step)
         return score_summary
 
-    def _apply_scoring_function(self, sampled_sequences: List[SampledSequencesDTO]) -> FinalSummary:
+    def _apply_scoring_function(self, sampled_sequences: List[SampledSequencesDTO], step:int) -> FinalSummary:
         molecules = self._join_scaffolds_and_decorations(sampled_sequences)
         smiles = [self._conversion.mol_to_smiles(molecule) if molecule else "INVALID" for molecule in molecules]
-        final_score: FinalSummary = self.scoring_function.get_final_score(smiles)
+        final_score: FinalSummary = self.scoring_function.get_final_score_for_step(smiles, step)
         final_score = self._apply_reaction_filters(molecules, final_score)
         return final_score
 
