@@ -16,9 +16,6 @@ class LocalTransferLearningLogger(BaseTransferLearningLogger):
         super().__init__(configuration)
         self._summary_writer = SummaryWriter(log_dir=self._log_config.logging_path)
 
-    def __del__(self):
-        self._summary_writer.close()
-
     def log_out_input_configuration(self):
         file = os.path.join(self._log_config.logging_path, "input.json")
         jsonstr = json.dumps(self._configuration, default=lambda x: x.__dict__, sort_keys=True, indent=4,

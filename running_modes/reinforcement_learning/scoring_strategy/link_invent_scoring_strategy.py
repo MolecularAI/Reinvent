@@ -13,12 +13,12 @@ class LinkInventScoringStrategy(BaseScoringStrategy):
         super().__init__(strategy_configuration, diversity_filter, logger)
 
     def evaluate(self, sampled_sequences: List[SampledSequencesDTO], step) -> FinalSummary:
-        score_summary = self._apply_scoring_function(sampled_sequences)
+        score_summary = self._apply_scoring_function(sampled_sequences, step)
         score_summary = self._clean_scored_smiles(score_summary)
         score_summary.total_score = self.diversity_filter.update_score(score_summary, sampled_sequences, step)
         return score_summary
 
-    def _apply_scoring_function(self, sampled_sequences: List[SampledSequencesDTO]) -> FinalSummary:
+    def _apply_scoring_function(self, sampled_sequences: List[SampledSequencesDTO], step) -> FinalSummary:
         molecules = self._join_linker_and_warheads(sampled_sequences, keep_labels=True)
         smiles = []
         for idx, molecule in enumerate(molecules):
@@ -33,7 +33,7 @@ class LinkInventScoringStrategy(BaseScoringStrategy):
                                         f'\n\toutput: {sampled_sequences[idx].output}\n')
             finally:
                 smiles.append(smiles_str)
-        final_score: FinalSummary = self.scoring_function.get_final_score(smiles)
+        final_score: FinalSummary = self.scoring_function.get_final_score_for_step(smiles, step)
         return final_score
 
     def _join_linker_and_warheads(self, sampled_sequences: List[SampledSequencesDTO], keep_labels=False):
