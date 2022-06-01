@@ -28,13 +28,14 @@ class LocalBondLinkReinforcementLogger(BaseReinforcementLogger):
 
     def timestep_report(self, start_time, n_steps, step, score_summary: FinalSummary,
                         agent_likelihood: torch.tensor, prior_likelihood: torch.tensor,
-                        augmented_likelihood: torch.tensor, diversity_filter):
+                        augmented_likelihood: torch.tensor, diversity_filter, actor):
         message = self._console_message_formatter.create(start_time, n_steps, step, score_summary,
                                                          agent_likelihood, prior_likelihood,
                                                          augmented_likelihood)
         self._logger.info(message)
         self._tensorboard_report(step, score_summary, agent_likelihood, prior_likelihood, augmented_likelihood,
                                  diversity_filter)
+        self.save_checkpoint(step, diversity_filter, actor)
 
     def _tensorboard_report(self, step, score_summary: FinalSummary, agent_likelihood, prior_likelihood,
                             augmented_likelihood, diversity_filter: BaseDiversityFilter):

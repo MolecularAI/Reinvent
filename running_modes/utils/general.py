@@ -12,9 +12,9 @@ def to_tensor(tensor):
     return torch.autograd.Variable(tensor)
 
 
-def set_default_device_cuda():
+def set_default_device_cuda(dont_use_cuda=False):
     """Sets the default device (cpu or cuda) used for all tensors."""
-    if torch.cuda.is_available() == False:
+    if torch.cuda.is_available() == False or dont_use_cuda:
         tensor = torch.FloatTensor
         torch.set_default_tensor_type(tensor)
         return False

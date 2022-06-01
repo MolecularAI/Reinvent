@@ -1,15 +1,15 @@
-from dataclasses import dataclass
-
+from pydantic import BaseModel
 from reinvent_scoring import ScoringFunctionParameters
-from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter_parameters import \
-    DiversityFilterParameters
+from reinvent_scoring.scoring.diversity_filters.curriculum_learning import DiversityFilterParameters
 
+from running_modes.automated_curriculum_learning.learning_strategy.learning_strategy_configuration import \
+    LearningStrategyConfiguration
 from running_modes.configurations import InceptionConfiguration
 
 
-@dataclass
-class ProductionStrategyConfiguration:
+class ProductionStrategyConfiguration(BaseModel):
     name: str
+    learning_strategy: LearningStrategyConfiguration
     scoring_function: ScoringFunctionParameters
     diversity_filter: DiversityFilterParameters
     inception: InceptionConfiguration
@@ -17,4 +17,4 @@ class ProductionStrategyConfiguration:
     batch_size: int = 64
     learning_rate: float = 0.0001
     sigma: float = 120
-    n_steps: int = 100
+    number_of_steps: int = 100

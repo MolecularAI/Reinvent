@@ -35,13 +35,10 @@ class BaseLearningStrategy(ABC):
     def _calculate_loss(self, scaffold_batch, decorator_batch, score, actor_nlls):
         raise NotImplementedError("_calculate_loss method is not implemented")
 
-    # TODO: Don't use CUDA.
-    def _to_tensor(self, tensor):
-        if isinstance(tensor, np.ndarray):
-            tensor = torch.from_numpy(tensor)
-        if torch.cuda.is_available():
-            return torch.autograd.Variable(tensor).cuda()
-        return torch.autograd.Variable(tensor)
+    def _to_tensor(self, array, use_cuda=True):
+        if torch.cuda.is_available() and use_cuda:
+            return torch.tensor(array, device=torch.device("cuda"))
+        return torch.tensor(array, device=torch.device("cpu"))
 
     def _disable_prior_gradients(self):
         # There might be a more elegant way of disabling gradients

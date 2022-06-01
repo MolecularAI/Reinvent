@@ -2,11 +2,11 @@ from running_modes.configurations.general_configuration_envelope import GeneralC
 from running_modes.configurations.logging.reinforcement_log_configuration import ReinforcementLoggerConfiguration
 from running_modes.enums.logging_mode_enum import LoggingModeEnum
 from running_modes.enums.model_type_enum import ModelTypeEnum
+from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
 from running_modes.reinforcement_learning.logging.link_logging.bond_link_reinforcement_logger import \
     BondLinkReinforcementLogger
-from running_modes.reinforcement_learning.logging.remote_reinforcement_logger import RemoteReinforcementLogger
 from running_modes.reinforcement_learning.logging.local_reinforcement_logger import LocalReinforcementLogger
-from running_modes.reinforcement_learning.logging.base_reinforcement_logger import BaseReinforcementLogger
+from running_modes.reinforcement_learning.logging.remote_reinforcement_logger import RemoteReinforcementLogger
 
 
 class ReinforcementLogger:
@@ -23,4 +23,5 @@ class ReinforcementLogger:
                 logger_instance = RemoteReinforcementLogger(configuration, log_config)
         else:
             logger_instance = BondLinkReinforcementLogger(configuration, log_config)
+
         return logger_instance

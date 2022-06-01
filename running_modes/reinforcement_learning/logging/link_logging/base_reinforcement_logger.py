@@ -24,7 +24,7 @@ class BaseReinforcementLogger(ABC):
     @abstractmethod
     def timestep_report(self, start_time, n_steps, step, score_summary: FinalSummary,
                         agent_likelihood: torch.tensor, prior_likelihood: torch.tensor,
-                        augmented_likelihood: torch.tensor, diversity_filter):
+                        augmented_likelihood: torch.tensor, diversity_filter, agent):
         raise NotImplementedError("timestep_report method is not implemented")
 
     def log_out_input_configuration(self):

@@ -8,8 +8,7 @@ from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.ba
 class TestLearningStrategyMascofStrategy(BaseTestLearningStrategy):
 
     def setUp(self):
-        self.learning_strategy = LearningStrategyEnum().MASCOF
-        super().setUp()
+        super().arrange(LearningStrategyEnum().MASCOF)
 
     def test_mascof_strategy(self):
         actor_nlls, critic_nlls, augmented_nlls = \

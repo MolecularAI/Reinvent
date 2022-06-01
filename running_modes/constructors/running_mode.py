@@ -28,7 +28,5 @@ class RunningMode:
             return CreateModelModeConstructor(configuration)
         if configuration.run_type == running_mode_enum.VALIDATION:
             return ValidationModeConstructor(configuration)
-        # if configuration.run_type == running_mode_enum.AUTOMATED_CURRICULUM_LEARNING:
-        #     return AutomatedCurriculumLearningModeConstructor(configuration)
         else:
             raise TypeError(f"Requested run type: '{configuration.run_type}' is not implemented.")

@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class CurriculumLearningConfiguration:
+class CurriculumLearningConfiguration(BaseModel):
     prior: str
     agent: str
     update_lock: str

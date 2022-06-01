@@ -49,13 +49,10 @@ class RemoteSamplingLogger(BaseSamplingLogger):
             self._logger.exception(data, exc_info=False)
 
     def _create_sample_report(self, smiles):
-        legend, list_of_mols = self._count_unique_inchi_keys(smiles)
+        legends, list_of_mols = self._count_unique_inchi_keys(smiles)
         list_of_smiles = [self._conversions.mol_to_smiles(mol) if mol is not None else "INVALID" for mol in list_of_mols]
+        report = [{"smiles": smiles, "legend": legend} for smiles, legend in zip(list_of_smiles, legends)]
 
-        report = {
-            "smiles": list_of_smiles,
-            "legend": legend
-        }
         return report
 
     def _assemble_timestep_report(self, fraction_valid_smiles, fraction_unique_smiles, smiles_report):

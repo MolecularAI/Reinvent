@@ -1,6 +1,5 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class BaseConfiguration:
+class BaseConfiguration(BaseModel):
     curriculum_type: str

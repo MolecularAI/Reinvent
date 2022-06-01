@@ -8,8 +8,7 @@ from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.ba
 class TestLearningStrategyMauliStrategy(BaseTestLearningStrategy):
 
     def setUp(self):
-        self.learning_strategy = LearningStrategyEnum().MAULI
-        super().setUp()
+        super().arrange(LearningStrategyEnum().MAULI)
 
     def test_mauli_strategy(self):
         actor_nlls, critic_nlls, augmented_nlls = \
