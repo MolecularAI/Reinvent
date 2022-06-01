@@ -8,8 +8,7 @@ from unittest_reinvent.running_modes.lib_invent_tests.learning_strategy_tests.ba
 class TestLearningStrategySdapStrategy(BaseTestLearningStrategy):
 
     def setUp(self):
-        self.learning_strategy = LearningStrategyEnum().SDAP
-        super().setUp()
+        super().arrange(LearningStrategyEnum().SDAP)
 
     def test_sdap_strategy(self):
         actor_nlls, critic_nlls, augmented_nlls = \

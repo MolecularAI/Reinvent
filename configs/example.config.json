@@ -18,6 +18,13 @@
       "AZGARD_EXECUTOR_SCRIPT_PATH": "/<your_path>/executor.py",
       "AZGARD_ENV_PATH": "/<your_path>/miniconda3/envs/AZgard/bin/python",
       "AZGARD_DEBUG": true
+    },
+    "ICOLOS": {
+      "ICOLOS_EXECUTOR_PATH": "/<your_path>/miniconda3/envs/icolosprod/bin/icolos",
+      "ICOLOS_DEBUG": true
+    },
+    "AIZYNTH": {
+      "CONFIG": "/projects/mai/synthesisplanning/minimal_config.yml"
     }
   },
   "ENVIRONMENTAL_VARIABLES": {
@@ -28,5 +35,7 @@
   "ACTIVITY_CLASSIFICATION": "",
   "SMILES_SET_PATH": "",
   "PRIOR_PATH": "",
-  "LIBINVENT_PRIOR_PATH": ""
+  "LIBINVENT_PRIOR_PATH": "",
+  "SMILES_SET_LINK_INVENT_PATH":"",
+  "LINK_INVENT_PRIOR_PATH": ""
 }

@@ -2,27 +2,28 @@ import time
 
 import numpy as np
 import torch
-
-from reinvent_models.reinvent_core.models.model import Model
-
+from reinvent_chemistry.utils import get_indices_of_unique_smiles
+from reinvent_models.lib_invent.enums.generative_model_regime import GenerativeModelRegimeEnum
+from reinvent_models.model_factory.configurations.model_configuration import ModelConfiguration
+from reinvent_models.model_factory.generative_model import GenerativeModel
 from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter import DiversityFilter
-from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter_parameters import DiversityFilterParameters
-from running_modes.constructors.base_running_mode import BaseRunningMode
+from reinvent_scoring.scoring.diversity_filters.reinvent_core.diversity_filter_parameters import \
+    DiversityFilterParameters
+from reinvent_scoring.scoring.score_summary import FinalSummary
+from reinvent_scoring.scoring.scoring_function_factory import ScoringFunctionFactory
+from reinvent_scoring.scoring.scoring_function_parameters import ScoringFunctionParameters
+
+from running_modes.automated_curriculum_learning.inception.inception import Inception
 from running_modes.configurations import GeneralConfigurationEnvelope, InceptionConfiguration
 from running_modes.configurations.curriculum_learning.curriculum_learning_components import CurriculumLearningComponents
 from running_modes.configurations.curriculum_learning.curriculum_learning_configuration import \
     CurriculumLearningConfiguration
+from running_modes.constructors.base_running_mode import BaseRunningMode
 from running_modes.curriculum_learning.logging import CurriculumLogger
 from running_modes.curriculum_learning.update_watcher import UpdateWatcher
-from running_modes.reinforcement_learning.inception import Inception
+from running_modes.enums.model_type_enum import ModelTypeEnum
 from running_modes.reinforcement_learning.margin_guard import MarginGuard
 from running_modes.utils import to_tensor
-
-from reinvent_chemistry.utils import get_indices_of_unique_smiles
-
-from reinvent_scoring.scoring.score_summary import FinalSummary
-from reinvent_scoring.scoring.scoring_function_factory import ScoringFunctionFactory
-from reinvent_scoring.scoring.scoring_function_parameters import ScoringFunctionParameters
 
 
 class CurriculumRunner(BaseRunningMode):
@@ -30,16 +31,22 @@ class CurriculumRunner(BaseRunningMode):
         self.envelope = envelope
         config_components = CurriculumLearningComponents(**self.envelope.parameters)
         self.config = CurriculumLearningConfiguration(**config_components.curriculum_learning)
-        self._prior = Model.load_from_file(self.config.prior)
-        self._agent = Model.load_from_file(self.config.agent)
+
+        model_regime = GenerativeModelRegimeEnum()
+        prior_config = ModelConfiguration(ModelTypeEnum().DEFAULT, model_regime.INFERENCE, self.config.prior)
+        agent_config = ModelConfiguration(ModelTypeEnum().DEFAULT, model_regime.TRAINING, self.config.agent)
+        _prior = GenerativeModel(prior_config)
+        _agent = GenerativeModel(agent_config)
+
+        self._prior = _prior
+        self._agent = _agent
         self.logger = CurriculumLogger(self.envelope)
         self.scoring_function = self.setup_scoring_function(config_components.scoring_function)
         self.diversity_filter = self._setup_diversity_filter(config_components.diversity_filter)
         self.inception = self.setup_inception(config_components.inception)
         self._margin_guard = MarginGuard(self)
-        self._optimizer = torch.optim.Adam(self._agent.network.parameters(), lr=self.config.learning_rate)
+        self._optimizer = torch.optim.Adam(self._agent.get_network_parameters(), lr=self.config.learning_rate)
 
-        assert self._prior.vocabulary == self._agent.vocabulary, "The agent and the prior must have the same vocabulary"
         self._update_watcher = UpdateWatcher(self)
 
     def run(self):
@@ -84,7 +91,7 @@ class CurriculumRunner(BaseRunningMode):
 
     def _disable_prior_gradients(self):
         # There might be a more elegant way of disabling gradients
-        for param in self._prior.network.parameters():
+        for param in self._prior.get_network_parameters():
             param.requires_grad = False
 
     def _stats_and_chekpoint(self, score, start_time, step, smiles, score_summary: FinalSummary,
@@ -98,7 +105,7 @@ class CurriculumRunner(BaseRunningMode):
         return self._update_reset_countdown(reset_countdown, mean_score)
 
     def _sample_unique_sequences(self, agent, batch_size):
-        seqs, smiles, agent_likelihood = agent.sample_sequences_and_smiles(batch_size)
+        seqs, smiles, agent_likelihood = agent.sample(batch_size)
         unique_idxs = get_indices_of_unique_smiles(smiles)
         seqs_unique = seqs[unique_idxs]
         smiles_np = np.array(smiles)
@@ -139,8 +146,11 @@ class CurriculumRunner(BaseRunningMode):
         return loss, agent_likelihood
 
     def reset(self, reset_countdown=0):
-        self._agent = Model.load_from_file(self.config.agent)
-        self._optimizer = torch.optim.Adam(self._agent.network.parameters(), lr=self.config.learning_rate)
+        model_regime = GenerativeModelRegimeEnum()
+        agent_config = ModelConfiguration(self.envelope.model_type, model_regime.TRAINING, self.config.agent)
+
+        self._agent = GenerativeModel(agent_config)
+        self._optimizer = torch.optim.Adam(self._agent.get_network_parameters(), lr=self.config.learning_rate)
         self.logger.log_message("Resetting Agent")
         self.logger.log_message(f"Adjusting sigma to: {self.config.sigma}")
         return reset_countdown

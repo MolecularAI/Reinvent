@@ -56,13 +56,10 @@ class RemoteTransferLearningLogger(BaseTransferLearningLogger):
         self._notify_server(data, self._log_config.recipient)
 
     def _create_sample_report(self, smiles):
-        legend, list_of_mols = self._count_compound_frequency(smiles)
+        legends, list_of_mols = self._count_compound_frequency(smiles)
         list_of_smiles = [self._conversions.mol_to_smiles(mol) if mol is not None else "INVALID" for mol in list_of_mols]
+        report = [{"smiles": smiles, "legend": legend} for smiles, legend in zip(list_of_smiles, legends)]
 
-        report = {
-            "smiles": list_of_smiles,
-            "legend": legend
-        }
         return report
 
     def _mean_learning_curve_profile(self, sampled_nlls: np.array, training_nlls: np.array):

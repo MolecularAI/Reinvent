@@ -41,7 +41,7 @@ class LocalCurriculumLogger(BaseCurriculumLogger):
                                  augmented_likelihood, diversity_filter)
 
     def save_final_state(self, agent, diversity_filter):
-        agent.save(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
+        agent.save_to_file(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
         self.save_diversity_memory(diversity_filter)
         self._summary_writer.close()
 

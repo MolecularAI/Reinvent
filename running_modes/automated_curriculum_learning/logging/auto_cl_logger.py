@@ -1,20 +1,24 @@
-from running_modes.automated_curriculum_learning.logging import LocalAutoCLLogger
-from running_modes.automated_curriculum_learning.logging.base_auto_cl_logger import BaseAutoCLLogger
-from running_modes.configurations import ReinforcementLoggerConfiguration
-from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
+from reinvent_models.model_factory.enums.model_type_enum import ModelTypeEnum
 
+from running_modes.automated_curriculum_learning.logging.base_logger import BaseLogger
+from running_modes.automated_curriculum_learning.logging.local_logger import LocalLogger
+from running_modes.configurations import CurriculumLoggerConfiguration
+from running_modes.configurations.general_configuration_envelope import GeneralConfigurationEnvelope
 from running_modes.enums.logging_mode_enum import LoggingModeEnum
 
 
 class AutoCLLogger:
 
-    def __new__(cls, configuration: GeneralConfigurationEnvelope) -> BaseAutoCLLogger:
+    def __new__(cls, configuration: GeneralConfigurationEnvelope) -> BaseLogger:
         logging_mode_enum = LoggingModeEnum()
-        auto_cl_config = ReinforcementLoggerConfiguration.parse_obj(configuration.logging)
+        model_type = ModelTypeEnum()
+        auto_cl_config = CurriculumLoggerConfiguration.parse_obj(configuration.logging)
         
         if auto_cl_config.recipient == logging_mode_enum.LOCAL:
-            logger_instance = LocalAutoCLLogger(configuration)
-
+            if model_type.DEFAULT == configuration.model_type:
+                return LocalLogger(configuration, auto_cl_config)
+            elif model_type.LINK_INVENT == configuration.model_type:
+                return LocalLogger(configuration, auto_cl_config)
         else:
             raise NotImplementedError("Remote Auto CL logging is not implemented.")
-        return logger_instance
+

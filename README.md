@@ -1,4 +1,4 @@
-REINVENT 3.1
+REINVENT 3.2
 =================================================================================================================
 
 Installation
@@ -12,7 +12,7 @@ Installation
 
 4. Activate the environment:
    
-        $ conda activate reinvent.v3.0
+        $ conda activate reinvent.v3.2
 
 5. Use the tool.
 

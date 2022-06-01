@@ -31,18 +31,17 @@ class RemoteCurriculumLogger(BaseCurriculumLogger):
                         mean_score: np.array, score_summary: FinalSummary, score,
                         agent_likelihood: torch.tensor, prior_likelihood: torch.tensor,
                         augmented_likelihood: torch.tensor, diversity_filter: BaseDiversityFilter):
-        score_components = self._score_summary_breakdown(score_summary, mean_score, diversity_filter)
+        score_components = self._score_summary_breakdown(score_summary, mean_score)
         learning_curves = self._learning_curve_profile(agent_likelihood, prior_likelihood, augmented_likelihood)
-        structures_table = self._visualize_structures(smiles, score, score_summary)
         smiles_report = self._create_sample_report(smiles, score, score_summary)
 
         time_estimation = running_modes.utils.general.estimate_run_time(start_time, n_steps, step)
-        data = self._assemble_timestep_report(step, score_components, structures_table, learning_curves,
+        data = self._assemble_timestep_report(step, score_components, diversity_filter, learning_curves,
                                               time_estimation, ul_rl.fraction_valid_smiles(smiles), smiles_report)
         self._notify_server(data, self._log_config.recipient)
 
     def save_final_state(self, agent, scaffold_filter):
-        agent.save(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
+        agent.save_to_file(os.path.join(self._log_config.result_folder, 'Agent.ckpt'))
         self.save_diversity_memory(scaffold_filter)
 
     def _notify_server(self, data, to_address):
@@ -109,25 +108,23 @@ class RemoteCurriculumLogger(BaseCurriculumLogger):
         }
         return learning_curves
 
-    def _score_summary_breakdown(self, score_summary: FinalSummary, mean_score: np.array,
-                                 diversity_filter: BaseDiversityFilter):
+    def _score_summary_breakdown(self, score_summary: FinalSummary, mean_score: np.array):
         score_components = {}
         for i, log in enumerate(score_summary.profile):
             score_components[f"{score_summary.profile[i].component_type}:{score_summary.profile[i].name}"] = \
                 float(np.mean(score_summary.profile[i].score))
         score_components["total_score:total_score"] = float(mean_score)
-        score_components["collected smiles in memory"] = diversity_filter.number_of_smiles_in_memory()
         return score_components
 
-    def _assemble_timestep_report(self, step, score_components, structures_table, learning_curves, time_estimation,
-                                  fraction_valid_smiles, smiles_report):
+    def _assemble_timestep_report(self, step, score_components, diversity_filter: BaseDiversityFilter,
+                                  learning_curves, time_estimation, fraction_valid_smiles, smiles_report):
         actual_step = step + 1
         timestep_report = {"step": actual_step,
                            "components": score_components,
-                           # "structures": structures_table,
                            "learning": learning_curves,
                            "time_estimation": time_estimation,
                            "fraction_valid_smiles": fraction_valid_smiles,
-                           "smiles_report": smiles_report
+                           "smiles_report": smiles_report,
+                           "collected smiles in memory": diversity_filter.number_of_smiles_in_memory()
                            }
         return timestep_report

@@ -61,7 +61,7 @@ class LibInventReinforcementLearning(BaseRunningMode):
 
     def _logging(self, start_time, step, score_summary, actor_nlls, critic_nlls, augmented_nlls):
         self.logger.timestep_report(start_time, self.configuration.n_steps, step, score_summary, actor_nlls,
-                                    critic_nlls, augmented_nlls, self.scoring_strategy.diversity_filter)
+                                    critic_nlls, augmented_nlls, self.scoring_strategy.diversity_filter, self.actor)
 
     def _calculate_likelihood(self, sampled_sequences: List[SampledSequencesDTO]):
         nll_calculation_action = LikelihoodEvaluation(self.actor, self.configuration.batch_size, self.logger)

@@ -23,13 +23,10 @@ from unittest_reinvent.fixtures.test_data import CELECOXIB, ASPIRIN, IBUPROFEN, 
     DECORATION_SUZUKI
 
 
-def dummy_func(a, b) -> float:
-    return 0.3
-
-
 class BaseTestLearningStrategy(unittest.TestCase):
 
-    def setUp(self):
+    def arrange(self, learning_strategy):
+        self.learning_strategy = learning_strategy
         self.sf_component_enum = ScoringFunctionComponentNameEnum()
         self.sf_enum = ScoringFunctionNameEnum()
         self.rf_enum = ReactionFiltersEnum()
@@ -51,7 +48,7 @@ class BaseTestLearningStrategy(unittest.TestCase):
         critic_model = Mock()
         critic_model.set_mode = lambda _: None
         critic_model.network.parameters = lambda: []
-        critic_model.likelihood = dummy_func
+        critic_model.likelihood = self.dummy_func
 
 
         reaction_filter_config = ReactionFilterConfiguration(type=self.rf_enum.SELECTIVE, reactions=reactions)
@@ -73,13 +70,16 @@ class BaseTestLearningStrategy(unittest.TestCase):
                                                              n_steps=2, batch_size=4)
 
         self.runner = LearningStrategy(critic_model, optimizer, config.learning_strategy)
-        self.runner._to_tensor = self._to_tensor
-
+        # self.runner._to_tensor = self._to_tensor
+        #
         self.scaffold_batch = np.array([CELECOXIB_SCAFFOLD])
         self.decorator_batch = np.array([DECORATION_SUZUKI])
-        self.score = torch.tensor([0.9], device=torch.device("cpu"))
-        self.actor_nlls = torch.tensor([0.2], device=torch.device("cpu"), requires_grad=True)
+        self.score = np.array([0.9]) # torch.tensor([0.9], device=torch.device("cpu"))
+        self.actor_nlls = torch.tensor([0.2], device=torch.device("cuda"), requires_grad=True)
 
+    @staticmethod
+    def dummy_func(a, b) -> float:
+        return 0.3
     @staticmethod
     def _to_tensor(tensor):
         if isinstance(tensor, np.ndarray):

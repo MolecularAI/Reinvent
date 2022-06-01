@@ -1,0 +1,6 @@
+from running_modes.automated_curriculum_learning.learning_strategy.dap_single_query_strategy import \
+    DAPSingleQueryStrategy
+from running_modes.automated_curriculum_learning.learning_strategy.dap_strategy import DAPStrategy
+from running_modes.automated_curriculum_learning.learning_strategy.mascof_strategy import MASCOFStrategy
+from running_modes.automated_curriculum_learning.learning_strategy.mauli_strategy import MAULIStrategy
+from running_modes.automated_curriculum_learning.learning_strategy.sdap_strategy import SDAPStrategy
