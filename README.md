@@ -1,3 +1,5 @@
+** IMPORTANT: This repository is in archive mode meaning that it is read only and will not undergo further changes.  All further development will be done on REINVENT 4. **
+
 REINVENT 3.2
 =================================================================================================================
 
